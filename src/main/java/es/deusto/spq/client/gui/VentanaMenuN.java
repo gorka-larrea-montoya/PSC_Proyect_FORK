@@ -214,73 +214,8 @@ public class VentanaMenuN extends JFrame {
 		mnItemAnyadir.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
-
-				String title = "";
-				while (title == null || title.isEmpty()) {
-					title = JOptionPane.showInputDialog(null, "Introduce el título del libro:");
-					if (title == null || title.isEmpty()) {
-						JOptionPane.showMessageDialog(null, "Debes introducir un título válido", "Advertencia",
-								JOptionPane.WARNING_MESSAGE);
-					}
-				}
-
-				String descripcion = "";
-				while (descripcion == null || descripcion.isEmpty()) {
-					descripcion = JOptionPane.showInputDialog(null, "Introduce la descripción del libro:");
-					if (descripcion == null || descripcion.isEmpty()) {
-						JOptionPane.showMessageDialog(null, "Debes introducir una descripción válida", "Advertencia",
-								JOptionPane.WARNING_MESSAGE);
-					}
-				}
-
-				Float precio = null;
-				while (precio == null) {
-					String precioString = JOptionPane.showInputDialog(null, "Introduce el precio del libro:");
-					if (precioString == null || precioString.trim().isEmpty()) {
-						JOptionPane.showMessageDialog(null, "Debes introducir un precio válido", "Advertencia",
-								JOptionPane.WARNING_MESSAGE);
-					} else {
-						try {
-							precio = Float.parseFloat(precioString);
-						} catch (NumberFormatException e1) {
-							JOptionPane.showMessageDialog(null, "Debes introducir un precio válido", "Advertencia",
-									JOptionPane.WARNING_MESSAGE);
-						}
-					}
-				}
-
-				String[] opciones = { "Alquilar", "Comprar" };
-
-				while (true) {
-					int opcion = JOptionPane.showOptionDialog(null, "¿Desea alquilarlo o comprarlo?", "Opciones",
-							JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null,
-							new String[] { "Alquilar", "Comprar" }, null);
-
-					if (opcion == JOptionPane.YES_OPTION) {
-						System.out.println("Alquilando");
-						System.out.println(opcion);
-						LibroDTO nuevoLibro = new LibroDTO(title, descripcion, precio, "alquiler");
-						ClientController.getInstance().adminSaveBook(nuevoLibro);
-						logger.info("LIBRO: " + nuevoLibro + "ALQUILADO");
-
-						break;
-					} else if (opcion == JOptionPane.NO_OPTION) {
-						System.out.println("Comprando");
-						System.out.println(opcion);
-						LibroDTO nuevoLibro = new LibroDTO(title, descripcion, precio, "compra");
-						System.out.println(nuevoLibro);
-						ClientController.getInstance().adminSaveBook(nuevoLibro);
-						logger.info("LIBRO: " + nuevoLibro + " COMPRADO");
-
-						break;
-					} else if (opcion == JOptionPane.CLOSED_OPTION) {
-						System.out.println(opcion);
-						JOptionPane.showMessageDialog(null, "Debe seleccionar una opción.");
-						logger.warn("OPCION SELECIONADA NO VALIDA");
-					}
-
-				}
-
+				new AnadirLibroOptionPane();
+			
 			}
 		});
 
@@ -295,9 +230,9 @@ public class VentanaMenuN extends JFrame {
 			                String selectedBook = dialog.getSelectedBook();
 			                if (selectedBook != null) {
 			                    // Realizar la eliminación del libro aquí
-			                    System.out.println("Libro seleccionado: " + selectedBook);
+			                    logger.info("Libro seleccionado: " + selectedBook);
 			                } else {
-			                    System.out.println("No se seleccionó ningún libro.");
+			                    logger.info("No se seleccionó ningún libro.");
 			                }
 			            }
 			        });
@@ -308,9 +243,7 @@ public class VentanaMenuN extends JFrame {
 	}
 
 	private void cargarDatosAlquilar(String usuario) {
-		// TODO Auto-generated method stub
-		ExampleClient eC = new ExampleClient("localhost", "8080");
-		books = eC.getBooksUsuarioUsuario(usuario);
+		books = ExampleClient.getInstance().getBooksUsuarioUsuario(usuario);
 		if (books != null) {
 			for (LibroDTO libro : books) {
 				String[] fila = { /* String.valueOf(libro.getId()), */ libro.getNombre(), libro.getDescripccion(),
@@ -325,9 +258,7 @@ public class VentanaMenuN extends JFrame {
 
 
 	private void cargarDatosCompra(String usuario) {
-		// TODO Auto-generated method stub
-		ExampleClient eC = new ExampleClient("localhost", "8080");
-		books = eC.getBooksCompraUsuario(usuario);
+		books = ExampleClient.getInstance().getBooksCompraUsuario(usuario);
 		if (books != null) {
 			for (LibroDTO libro : books) {
 				String[] fila = { /* String.valueOf(libro.getId()), */ libro.getNombre(), libro.getDescripccion(),

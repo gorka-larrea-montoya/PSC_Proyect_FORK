@@ -59,8 +59,8 @@ protected static final Logger logger = LogManager.getLogger();
     		  "Introduzca los detalles del libro", JOptionPane.OK_CANCEL_OPTION);
       
       if (result == JOptionPane.OK_OPTION) {
-    	  logger.info("OPTIONPANE - Introduciendo Libro: " + parsearLibro().toString());
     	  if (validarLibro()) {
+    		  logger.info("OPTIONPANE - Introduciendo Libro: " + parsearLibro().toString());
     		  if (ClientController.getInstance().adminSaveBook(parsearLibro())) {
     			  JOptionPane.showMessageDialog(null, "Libro anadido correctamente", "Exito", JOptionPane.INFORMATION_MESSAGE);
 			} else {
@@ -77,23 +77,7 @@ protected static final Logger logger = LogManager.getLogger();
       }
    }
    private boolean validarLibro() {
-	   boolean result = true;
-	   if (titleField.getText() == "") {
-		   result = false;   
-	   }
-	   if(descField.getText() == "") {
-		   result = false;
-	   }
-	   try {
-		   if(Float.parseFloat(precioField.getText()) < 0.05){
-			   result = false;
-		   }
-	   } catch (Exception e) {
-		   result = false;
-
-	   } 
-	   
-	   return result;
+	   return  ClientController.getInstance().validarLibro(titleField.getText(), descField.getText(), precioField.getText(), null);
    }
 
    private LibroDTO parsearLibro(){
