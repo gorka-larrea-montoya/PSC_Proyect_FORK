@@ -256,7 +256,7 @@ public class ExampleClient {
 	
 	
 	
-	public boolean actualizarLibroCommprado(long id, String titulo, String descrip, float precio, String tipo, String usuario) {
+	public boolean actualizarLibroComprado(long id, String titulo, String descrip, float precio, String tipo, String usuario) {
 		WebTarget registerUserWebTarget = webTarget.path("ActualizarLibroComprado");
 		Invocation.Builder invocationBuilder = registerUserWebTarget.request(MediaType.APPLICATION_JSON);
 

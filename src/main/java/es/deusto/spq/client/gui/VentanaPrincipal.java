@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -13,6 +14,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
+
+import es.deusto.spq.client.ClientController;
 import es.deusto.spq.client.ExampleClient;
 import es.deusto.spq.pojo.LibroDTO;
 import javax.swing.JLabel;
@@ -141,7 +144,7 @@ public class VentanaPrincipal extends JFrame {
 					result = books.get(i);
 					System.out.println("Comprando Libro : " + books.get(libros[i]).getNombre());
 					eC.comprarLibro(books.get(libros[i]).getId(), books.get(libros[i]).getNombre(), books.get(libros[i]).getDescripccion(), result.getPrecio(),books.get(libros[i]).getTipo(), usuario);
-					eC.actualizarLibroCommprado(books.get(libros[i]).getId(), books.get(libros[i]).getNombre(), books.get(libros[i]).getDescripccion(), result.getPrecio(),books.get(libros[i]).getTipo(), usuario);
+					eC.actualizarLibroComprado(books.get(libros[i]).getId(), books.get(libros[i]).getNombre(), books.get(libros[i]).getDescripccion(), result.getPrecio(),books.get(libros[i]).getTipo(), usuario);
 				}	
 				for (int i = libros.length-1; i>=0 ; i--) {
 					modelo.removeRow(libros[i]);
@@ -157,7 +160,7 @@ public class VentanaPrincipal extends JFrame {
 		
 		btnAlquilar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ExampleClient ec = new ExampleClient("localhost", "8080");
+				
 				
 				//btnAlquilar.setEnabled(false);
 				int[] libros = tabla.getSelectedRows();
@@ -166,15 +169,16 @@ public class VentanaPrincipal extends JFrame {
 					result.add(books.get(libros[i]));
 					System.out.println(books.get(libros[i]).getNombre());
 				} 
-				for (int i = libros.length-1; i>=0 ; i--) {
-					modelo.removeRow(libros[i]);
-				}
-				//TODO ponerle una ventana emergente de "Se ha alquilado el libro". Así además se hace mas natural la actualización de la tabla.
-				 
-				 
-				 ec.alquilarLibros(result,usuario);
 
-				
+				//TODO ponerle una ventana emergente de "Se ha alquilado el libro". Así además se hace mas natural la actualización de la tabla.
+				if (ClientController.getInstance().alquilarLibros(result)) {
+					JOptionPane.showMessageDialog(null, "Libro alquilado correctamente", "Alquiler", JOptionPane.INFORMATION_MESSAGE);
+					//Borra los libros del panel solo si se han alquilado correctamente
+					cargarDatosAlquiler();
+					
+				}else {
+					JOptionPane.showMessageDialog(null,"Error al alquilar libro","Compra",JOptionPane.ERROR_MESSAGE);
+				}	
 			}
 		});
 		
@@ -198,8 +202,10 @@ public class VentanaPrincipal extends JFrame {
 	}
 
 	private void cargarDatosAlquiler() {
-		// TODO Auto-generated method stub
-		
+		// Primero de todo descarga todas las lineas para que se pueda cargar 
+		for (int i = 0; i < modelo.getRowCount(); i++) {
+			modelo.removeRow(0);
+		}
 		ExampleClient eC = new ExampleClient("localhost", "8080");
 		books = eC.getBooksAlquiler();
 		for (LibroDTO libro : books) {
@@ -212,13 +218,16 @@ public class VentanaPrincipal extends JFrame {
 	}
 
 	private void cargarDatosCompra() {
-		// TODO Auto-generated method stub
+		// Primero de todo descarga todas las lineas para que se pueda cargar 
+		for (int i = 0; i < modelo.getRowCount(); i++) {
+			modelo.removeRow(0);
+		}
 		ExampleClient eC = new ExampleClient("localhost", "8080");
 		books = eC.getBooksCompra();
 		for (LibroDTO libro : books) {
 			String[] fila = {/*String.valueOf(libro.getId()),*/ libro.getNombre(), libro.getDescripccion(), String.valueOf(libro.getPrecio()),libro.getTipo() };
 			modelo.addRow(fila);
-			System.out.println(libro.toString());
+			//System.out.println(libro.toString());
 		}
 
 	}

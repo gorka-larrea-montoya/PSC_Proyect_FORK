@@ -124,27 +124,20 @@ public class VentanaRegistro extends JFrame {
 		btnRegistrarse.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (textFieldNombre.getText().equals("") && textFieldContrasenia.getText().equals("")) {
-
 					JOptionPane.showMessageDialog(null, "Complete todos los campos", "ERROR!",
 							JOptionPane.ERROR_MESSAGE);
-
 				} else {
-
-
-					User us = new User(textFieldNombre.getText(), textFieldContrasenia.getText());
-				
-					ExampleClient eC = new ExampleClient("localhost", "8080");
-					eC.registerUser(us.getLogin(), us.getPassword());
+					ClientController.getInstance().registrarUsuario(textFieldNombre.getText(),textFieldContrasenia.getText());
 					dispose();
-					VentanaLoginN vL = new VentanaLoginN();
+					new VentanaLoginN();
 				}
 			}
 		});
 
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				System.exit(0);
-
+			dispose();
+			new VentanaLoginN();
 			}
 		});
 
