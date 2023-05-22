@@ -20,7 +20,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import es.deusto.spq.pojo.Compra;
+import es.deusto.spq.pojo.CompraDTO;
 import es.deusto.spq.pojo.AlquilerDTO;
 import es.deusto.spq.pojo.LibroDTO;
 import es.deusto.spq.pojo.UserData;
@@ -243,7 +243,7 @@ public class ExampleClient {
 
 		LibroDTO l=new LibroDTO(titulo,descrip,precio,tipo);
 		l.setId(id);
-		Compra compra=new Compra(l,usuario);
+		CompraDTO compra=new CompraDTO(l,usuario);
 		Response response = invocationBuilder.post(Entity.entity(compra, MediaType.APPLICATION_JSON));
 		if (response.getStatus() != Status.OK.getStatusCode()) {
 			logger.error("Error connecting with the server. Code: {}", response.getStatus());

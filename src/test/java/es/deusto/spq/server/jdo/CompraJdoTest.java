@@ -7,7 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
-import es.deusto.spq.server.jdo.CompraJdo;
+import es.deusto.spq.server.jdo.Compra;
 import es.deusto.spq.server.jdo.Libro;
 
 
@@ -17,13 +17,13 @@ public class CompraJdoTest {
 	private Libro libroMock;
 	private String usuarioMock;
 
-	private CompraJdo compra;
+	private Compra compra;
 
 	@Before
 	public void setUp() {
 		libroMock = mock(Libro.class);
 		usuarioMock = "usuario1";
-		compra = new CompraJdo(libroMock, usuarioMock);
+		compra = new Compra(libroMock, usuarioMock);
 	}
 
 	@Test

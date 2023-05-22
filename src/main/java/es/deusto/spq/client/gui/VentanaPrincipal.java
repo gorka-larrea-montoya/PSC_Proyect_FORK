@@ -170,7 +170,7 @@ public class VentanaPrincipal extends JFrame {
 					System.out.println(books.get(libros[i]).getNombre());
 				} 
 
-				//TODO ponerle una ventana emergente de "Se ha alquilado el libro". Así además se hace mas natural la actualización de la tabla.
+				//ventana emergente de "Se ha alquilado el libro". Así además se hace mas natural la actualización de la tabla.
 				if (ClientController.getInstance().alquilarLibros(result)) {
 					JOptionPane.showMessageDialog(null, "Libro alquilado correctamente", "Alquiler", JOptionPane.INFORMATION_MESSAGE);
 					//Borra los libros del panel solo si se han alquilado correctamente

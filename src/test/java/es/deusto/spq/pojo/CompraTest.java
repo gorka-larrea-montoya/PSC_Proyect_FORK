@@ -14,16 +14,16 @@ public class CompraTest {
     @Mock
     private LibroDTO libroMock;
 
-    private Compra compra;
+    private CompraDTO compra;
 
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        compra = new Compra(libroMock, "usuario");
+        compra = new CompraDTO(libroMock, "usuario");
     }
     @Test
     public void testCompra() {
-        compra = new Compra();
+        compra = new CompraDTO();
         assertNotNull(compra);
     }
     @Test

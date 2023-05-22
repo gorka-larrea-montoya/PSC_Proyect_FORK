@@ -31,8 +31,8 @@ import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 import es.deusto.spq.server.jdo.Libro;
 import es.deusto.spq.server.jdo.Alquiler;
-import es.deusto.spq.server.jdo.CompraJdo;
-import es.deusto.spq.pojo.Compra;
+import es.deusto.spq.server.jdo.Compra;
+import es.deusto.spq.pojo.CompraDTO;
 import es.deusto.spq.pojo.LibroDTO;
 
 @Path("/resource")
@@ -222,8 +222,8 @@ public class Resource {
 	@POST
 	@Path("/ComprarLibro")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response compraLibros(Compra c) {
-
+	public Response compraLibros(CompraDTO c) {
+		
 		if (LudoFunAccountService.getInstance().registerCompra(c)) {
 			return Response.ok().build();
 		} else {
@@ -248,7 +248,7 @@ public class Resource {
 		// coger ids de los libros que hay en la tabla compra con ese usuario
 		try {
 			// System.out.println("ENTRA");
-			Query query = pm.newQuery(CompraJdo.class);
+			Query query = pm.newQuery(Compra.class);
 			//System.out.println("QUERY:" + query);
 			query.setResult("bookKey");
 			query.setFilter("usuario == '" + usuario + "'");

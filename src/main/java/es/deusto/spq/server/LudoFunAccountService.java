@@ -8,10 +8,10 @@ import javax.jdo.Transaction;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import es.deusto.spq.pojo.Compra;
+import es.deusto.spq.pojo.CompraDTO;
 import es.deusto.spq.pojo.LibroDTO;
 import es.deusto.spq.pojo.UserData;
-import es.deusto.spq.server.jdo.CompraJdo;
+import es.deusto.spq.server.jdo.Compra;
 
 import es.deusto.spq.pojo.AlquilerDTO;
 import es.deusto.spq.pojo.UserData;
@@ -122,13 +122,13 @@ public class LudoFunAccountService {
 			}
 		}
 	}
-
-	public boolean registerCompra(Compra c) {
-
-		Libro l = new Libro(c.getLibro().getNombre(), c.getLibro().getDescripccion(), c.getLibro().getPrecio(),
+ 
+	public boolean registerCompra(CompraDTO c) {
+		/*
+		Libro l = new Libro(c.getLibronombre(), c.getli(), c.getLibro().getPrecio(),
 				c.getLibro().getTipo());
 		l.setId(c.getLibro().getId());
-		CompraJdo compra = new CompraJdo(l, c.getUsuario());
+		Compra compra = new Compra(l, c.getUsuario());
 		compra.setBookKey(l.getId());
 		try {
 			tx.begin();
@@ -144,11 +144,11 @@ public class LudoFunAccountService {
 				tx.rollback();
 			}
 			return false;
-		}
+		}*/ return false; //TODO Quitar esto al hacer el DAO
 	}
-
+ 
 	public boolean registerActualizarLibro(LibroDTO libro) {
-
+		/* TODO
 		Libro l = new Libro(libro.getNombre(),libro.getDescripccion(), libro.getPrecio(),
 				libro.getTipo());
 		l.setId(libro.getId());
@@ -167,6 +167,6 @@ public class LudoFunAccountService {
 				tx.rollback();
 			}
 			return false;
-		}
+		}*/ return false; //TODO quitar esto al arreglar
 	}
 }

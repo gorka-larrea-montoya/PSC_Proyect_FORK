@@ -10,28 +10,23 @@ import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 import javax.jdo.identity.*;
 
+import es.deusto.spq.pojo.LibroDTO;
+
 
 @PersistenceCapable
-public class CompraJdo {
+public class Compra {
 	@PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.NATIVE)
 	private Long id;
-
-
-
 	@Persistent
-	private long bookKey;
-
-	@NotPersistent
-	private Libro libro;
-
+	private Float libroprecio;
+	private String libronombre, librodesc;
 	private String usuario;
-	//private float precio;
-	
+
 	/**
 	 * constructor vacio
 	 */
-	public CompraJdo() {
+	public Compra() {
 		
 	}
 	
@@ -39,19 +34,24 @@ public class CompraJdo {
 	 * constructor con los siguientes parametros
 	 * @param libro
 	 * @param usuario
-	 * @param precio
 	 */
-	public CompraJdo(Libro libro, String usuario/*, float precio*/) {
+	public Compra(Libro libro, String usuario) {
 		super();
-		this.libro = libro;
+
 		this.usuario = usuario;
-		//this.precio = precio;
+		this.libronombre = libro.getNombre();
+		this.librodesc = libro.getDescripccion();
+		this.libroprecio = libro.getPrecio();
 	}
 	public Libro getLibro() {
+		Libro libro = new Libro(libronombre,librodesc,libroprecio,"Compra");
+		
 		return libro;
 	}
 	public void setLibro(Libro libro) {
-		this.libro = libro;
+		this.libronombre = libro.getNombre();
+		this.librodesc = libro.getDescripccion();
+		this.libroprecio = libro.getPrecio();
 	}
 	public String getUsuario() {
 		return usuario;
@@ -59,18 +59,6 @@ public class CompraJdo {
 	public void setUsuario(String usuario) {
 		this.usuario = usuario;
 	}
-//	public float getPrecio() {
-//		return precio;
-//	}
-//	public void setPrecio(float precio) {
-//		this.precio = precio;
-//	}
-	public void setBookKey(long bookKey) {
-		this.bookKey = bookKey;
-	}
 
-	public long getBookKey() {
-		return bookKey;
-	}
 	
 }
