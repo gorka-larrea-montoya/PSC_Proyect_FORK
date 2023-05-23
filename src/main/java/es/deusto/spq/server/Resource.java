@@ -51,56 +51,7 @@ public class Resource {
 		this.tx = pm.currentTransaction();
 	}
 
-//	@POST
-//	@Path("/sayMessage")
-//	public Response sayMessage(DirectMessage directMessage) {
-//		User user = null;
-//		try {
-//			tx.begin();
-//			logger.info("Creating query ...");
-//
-//			try (Query<?> q = pm.newQuery("SELECT FROM " + User.class.getName() + " WHERE login == \""
-//					+ directMessage.getUserData().getLogin() + "\" &&  password == \""
-//					+ directMessage.getUserData().getPassword() + "\"")) {
-//				q.setUnique(true);
-//				user = (User) q.execute();
-//
-//				logger.info("User retrieved: {}", user);
-//				if (user != null) {
-//					Message message = new Message(directMessage.getMessageData().getMessage());
-//					user.getMessages().add(message);
-//					pm.makePersistent(user);
-//				}
-//			} catch (Exception e) {
-//				e.printStackTrace();
-//			}
-//			tx.commit();
-//		} finally {
-//			if (tx.isActive()) {
-//				tx.rollback();
-//			}
-//		}
-//
-//		if (user != null) {
-//			cont++;
-//			logger.info(" * Client number: {}", cont);
-//			MessageData messageData = new MessageData();
-//			messageData.setMessage(directMessage.getMessageData().getMessage());
-//			return Response.ok(messageData).build();
-//		} else {
-//			return Response.status(Status.BAD_REQUEST)
-//					.entity("Login details supplied for message delivery are not correct").build();
-//		}
-//	}
 
-	/*
-	 * @POST
-	 * 
-	 * @Path("/register") public Response registerUser(UserData userData) {
-	 * if(LudoFunAccountService.getInstance().registerUser(userData)) { return
-	 * Response.ok().build(); } else { //Este es el error especifico 409 return
-	 * Response.serverError().status(Response.Status.CONFLICT).build(); } }
-	 */
 	@POST
 	@Path("/anadirLibro")
 	public Response anadirLibro(Libro libro) {
@@ -114,34 +65,13 @@ public class Resource {
 	@POST
 	@Path("/login")
 	public Response loginUser(UserData userData) {
-		try {
-			tx.begin();
-			logger.info("Checking whether the user already exits or not: '{}'", userData.getLogin());
-			User user = null;
-			try {
-				user = pm.getObjectById(User.class, userData.getLogin());
-			} catch (javax.jdo.JDOObjectNotFoundException jonfe) {
-				logger.info("Exception launched: {}", jonfe.getMessage());
-			}
-			logger.info("User: {}", user);
-			if (user != null) {
-				if (!user.getPassword().equals(userData.getPassword())) {
-					return Response.serverError().build();
-				}
-			} else {
-				return Response.serverError().build();
-			}
-			tx.commit();
-
+		if (LudoFunAccountService.getInstance().loginUser(userData)) {
 			return Response.ok().build();
-		} finally {
-			if (tx.isActive()) {
-				tx.rollback();
-			}
-			pm.close();
+		}else {
+			return Response.serverError().build();
 		}
 	}
-
+	
 	@POST
 	@Path("/register")
 	public Response registerUser(UserData userData) {
@@ -152,27 +82,6 @@ public class Resource {
 			return Response.status(Response.Status.CONFLICT).build();
 		}
 	}
-
-	/*
-	 * @GET
-	 * 
-	 * @Path("/login") public Response login(UserData userData) {
-	 * if(LudoFunAccountService.getInstance().loginUser(userData)) { return
-	 * Response.ok().build(); }else { //Este es el 401 return
-	 * Response.serverError().status(Response.Status.UNAUTHORIZED).build(); } }
-	 */
-
-	/*
-	 * @POST
-	 * 
-	 * @Path("/login")
-	 * 
-	 * @Consumes(MediaType.APPLICATION_JSON) public Response login(UserData
-	 * userData) { if(LudoFunAccountService.getInstance().loginUser(userData)) {
-	 * return Response.ok().build(); } else { return
-	 * Response.status(Response.Status.UNAUTHORIZED).build(); } }
-	 */
-
 	@GET
 	@Path("/getBooks")
 	public List<Libro> getBooks() {
@@ -241,12 +150,14 @@ public class Resource {
 	@Path("/librosCompraU")
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Libro> getBooksCompraUsuario(String usuario) {
-
+		
+	
 		List<Libro> books = new ArrayList();
 		List<Long> ids = new ArrayList();
-
+		
+		//TODO reescribir todo esto
 		// coger ids de los libros que hay en la tabla compra con ese usuario
-		try {
+		/*try {
 			// System.out.println("ENTRA");
 			Query query = pm.newQuery(Compra.class);
 			//System.out.println("QUERY:" + query);
@@ -274,7 +185,7 @@ public class Resource {
 
 		} finally {
 			pm.close();
-		}
+		}*/
 
 		return books;
 	}

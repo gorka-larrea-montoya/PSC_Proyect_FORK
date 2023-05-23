@@ -1,4 +1,4 @@
-package es.deusto.spq.server.jdo;
+package es.deusto.spq.server.dao;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,6 +7,8 @@ import javax.jdo.Extent;
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 import javax.jdo.Transaction;
+
+import es.deusto.spq.server.jdo.Libro;
 
 
 public class LibroDAO extends DataAccessObjectBase implements IDataAccessObject<Libro>{
@@ -91,9 +93,7 @@ public class LibroDAO extends DataAccessObjectBase implements IDataAccessObject<
 
 	@Override
 	public void update(Libro object) {
-		
-
-		
+	
 		PersistenceManager pm = pmf.getPersistenceManager();
 		Transaction tx = pm.currentTransaction();
 		

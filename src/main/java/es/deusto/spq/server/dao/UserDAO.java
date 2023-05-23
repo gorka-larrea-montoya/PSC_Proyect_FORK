@@ -1,4 +1,4 @@
-package es.deusto.spq.server.jdo;
+package es.deusto.spq.server.dao;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,6 +7,8 @@ import javax.jdo.Extent;
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 import javax.jdo.Transaction;
+
+import es.deusto.spq.server.jdo.User;
 
 
 public class UserDAO extends DataAccessObjectBase implements IDataAccessObject<User>{
@@ -69,8 +71,9 @@ public class UserDAO extends DataAccessObjectBase implements IDataAccessObject<U
 			Query<?> query = pm.newQuery("SELECT FROM " + User.class.getName() + " WHERE login == '" + login + "'");
 			query.setUnique(true);
 			result = (User) query.execute();
-			
+			logger.debug("1:Searched for  " + login + " and found " + result.toString() );
 			tx.commit();
+			logger.debug("2:Searched for " + login + " and found " + result.toString() );
 		}catch(Exception e) {
 			logger.error("Error querying an User : "+ e.getMessage());
 		}finally {
@@ -79,7 +82,7 @@ public class UserDAO extends DataAccessObjectBase implements IDataAccessObject<U
 			}
 			pm.close();	
 		}
-		logger.info("Searched for " + login + " and found " + result.toString() );
+		logger.debug("3: Searched for " + login + " and found " + result.toString() );
 		return result;
 	}
 

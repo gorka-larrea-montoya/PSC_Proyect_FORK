@@ -60,5 +60,37 @@ public class Compra {
 		this.usuario = usuario;
 	}
 
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Float getLibroprecio() {
+		return libroprecio;
+	}
+
+	public void setLibroprecio(Float libroprecio) {
+		this.libroprecio = libroprecio;
+	}
+
+	public String getLibronombre() {
+		return libronombre;
+	}
+
+	public void setLibronombre(String libronombre) {
+		this.libronombre = libronombre;
+	}
+
+	public String getLibrodesc() {
+		return librodesc;
+	}
+
+	public void setLibrodesc(String librodesc) {
+		this.librodesc = librodesc;
+	}
+
 	
 }

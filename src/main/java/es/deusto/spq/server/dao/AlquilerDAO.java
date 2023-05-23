@@ -1,4 +1,4 @@
-package es.deusto.spq.server.jdo;
+package es.deusto.spq.server.dao;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,6 +7,8 @@ import javax.jdo.Extent;
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 import javax.jdo.Transaction;
+
+import es.deusto.spq.server.jdo.Alquiler;
 
 
 public class AlquilerDAO extends DataAccessObjectBase implements IDataAccessObject<Alquiler>{

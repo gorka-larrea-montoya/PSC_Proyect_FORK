@@ -15,13 +15,12 @@ import es.deusto.spq.server.jdo.Compra;
 
 import es.deusto.spq.pojo.AlquilerDTO;
 import es.deusto.spq.pojo.UserData;
+import es.deusto.spq.server.dao.AlquilerDAO;
+import es.deusto.spq.server.dao.LibroDAO;
+import es.deusto.spq.server.dao.UserDAO;
 import es.deusto.spq.server.jdo.Alquiler;
-import es.deusto.spq.server.jdo.AlquilerDAO;
 import es.deusto.spq.server.jdo.Libro;
-import es.deusto.spq.server.jdo.LibroDAO;
-
 import es.deusto.spq.server.jdo.User;
-import es.deusto.spq.server.jdo.UserDAO;
 import es.deusto.spq.pojo.UserData;
 
 public class LudoFunAccountService {
@@ -92,35 +91,23 @@ public class LudoFunAccountService {
 	}
 
 	public boolean loginUser(UserData userData) {
-		try {
-			tx.begin();
-			logger.info("Login : Checking whether the user already exits or not: '{}'", userData.getLogin());
-			User user = null;
-			try {
-				user = pm.getObjectById(User.class, userData.getLogin());
-			} catch (Exception e) {
-				e.printStackTrace();
-				logger.error("Exception launched: {}", e.getMessage());
-			}
-			if (user == null) {
-				logger.info("Login : User does not exist");
-				return false;
-
+		boolean result = false;
+		User user = null;
+		logger.info("Login: Checking whether the user already exits or not: ", userData.getLogin());
+		user = UserDAO.getInstance().find(userData.getLogin());
+		
+		if (user == null) {
+			logger.info("The user does not exist");
+		}else {
+			logger.debug("AccountService - Login: obtained User: " +  user.getLogin()+" : " +user.getPassword() +"");
+			if (userData.getPassword().equals(user.getPassword())) {
+				logger.debug("Login: Passwords match: " + userData.getPassword() + " - " + user.getPassword());
+				result = true;
 			} else {
-				if (user.getPassword() == userData.getPassword()) {
-					logger.info("Login: User Does Exist");
-					return true;
-				} else {
-					logger.info("Login: User and Password Do Not Match");
-					return false;
-				}
-			}
-
-		} finally {
-			if (tx.isActive()) {
-				tx.rollback();
+				logger.debug("Login: Passwords do not match: " + userData.getPassword() + " - " + user.getPassword());
 			}
 		}
+		return result;
 	}
  
 	public boolean registerCompra(CompraDTO c) {

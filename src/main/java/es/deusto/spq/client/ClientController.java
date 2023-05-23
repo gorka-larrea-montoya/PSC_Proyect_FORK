@@ -11,6 +11,8 @@ import es.deusto.spq.server.LudoFunAccountService;
 
 public class ClientController {
 	public static ClientController instance;
+	private static String user;
+	private static String pass;
 	protected static final Logger logger = LogManager.getLogger();
 	
 	
@@ -59,4 +61,21 @@ public class ClientController {
 	public boolean alquilarLibros(ArrayList<LibroDTO> result) {
 		return ExampleClient.getInstance().alquilarLibros(result, null);		
 	}
+
+	public static String getUser() {
+		return user;
+	}
+
+	public static void setUser(String user) {
+		ClientController.user = user;
+	}
+
+	public static String getPass() {
+		return pass;
+	}
+
+	public static void setPass(String pass) {
+		ClientController.pass = pass;
+	}
+	
 }

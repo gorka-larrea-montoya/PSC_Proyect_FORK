@@ -1,4 +1,4 @@
-package es.deusto.spq.server.jdo;
+package es.deusto.spq.server.dao;
 
 import java.util.List;
 

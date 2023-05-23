@@ -9,7 +9,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.when;
 
-public class CompraTest {
+public class CompraDTOTest {
 
     @Mock
     private LibroDTO libroMock;
@@ -18,7 +18,7 @@ public class CompraTest {
 
     @Before
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         compra = new CompraDTO(libroMock, "usuario");
     }
     @Test
@@ -28,14 +28,14 @@ public class CompraTest {
     }
     @Test
     public void testGetLibro() {
-        assertEquals(libroMock, compra.getLibro());
+        assertEquals(libroMock, compra.getLibroDTO());
     }
 
     @Test
     public void testSetLibro() {
         LibroDTO nuevoLibro = new LibroDTO("Libro1","Desc1",10,"Tipe1");
         compra.setLibro(nuevoLibro);
-        assertEquals(nuevoLibro, compra.getLibro());
+        assertEquals(nuevoLibro, compra.getLibroDTO());
     }
 
     @Test
@@ -50,7 +50,7 @@ public class CompraTest {
     }
     @Test
     public void testToString() {
-        assertEquals("Compra [libro=" + compra.getLibro() + ", usuario=" + compra.getUsuario() + "]", compra.toString());
+        assertEquals("Compra [libro=" + compra.getLibroDTO() + ", usuario=" + compra.getUsuario() + "]", compra.toString());
     }
 
 //    @Test

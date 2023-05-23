@@ -122,7 +122,7 @@ public class VentanaPrincipal extends JFrame {
 			cargarDatosCompra();
 			panel_2.add(btnCompra);
 		}
-		//TODO FUNCIONALIDAD FANCY DE BOTON <- NO FUNCIONA TODAVIA
+		
 		tabla.addMouseListener(new MouseAdapter() {
 			@SuppressWarnings("unused")
 			public void MouseClicked(MouseEvent e) {
@@ -202,7 +202,7 @@ public class VentanaPrincipal extends JFrame {
 	}
 
 	private void cargarDatosAlquiler() {
-		// Primero de todo descarga todas las lineas para que se pueda cargar 
+		// Primero  descarga todas las lineas para que se pueda cargar 
 		for (int i = 0; i < modelo.getRowCount(); i++) {
 			modelo.removeRow(0);
 		}
@@ -218,7 +218,7 @@ public class VentanaPrincipal extends JFrame {
 	}
 
 	private void cargarDatosCompra() {
-		// Primero de todo descarga todas las lineas para que se pueda cargar 
+		// Primero  descarga todas las lineas para que se pueda cargar 
 		for (int i = 0; i < modelo.getRowCount(); i++) {
 			modelo.removeRow(0);
 		}

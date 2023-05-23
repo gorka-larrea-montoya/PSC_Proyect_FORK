@@ -34,8 +34,6 @@ public class ExampleClient {
 	protected static final Logger logger = LogManager.getLogger();
 	private static String hostname;
 	private static String port;
-	private static String user;
-	private static String password;
 //	private static final String USER = "dipina";
 //	private static final String PASSWORD = "dipina";
 
@@ -272,22 +270,5 @@ public class ExampleClient {
 		}
 		
 	}
-	
-	
-	
-	public static String getUser() {
-		return user;
-	}
-	public static void setUser(String user) {
-		ExampleClient.user = user;
-	}
-	public static String getPassword() {
-		return password;
-	}
-	public static void setPassword(String password) {
-		ExampleClient.password = password;
-	}
-	
-	
-	
+		
 }
