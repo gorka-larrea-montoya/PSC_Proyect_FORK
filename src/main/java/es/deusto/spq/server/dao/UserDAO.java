@@ -36,53 +36,37 @@ public class UserDAO extends DataAccessObjectBase implements IDataAccessObject<U
 	@Override
 	public List<User> getAll() {
 		PersistenceManager pm = pmf.getPersistenceManager();
-		Transaction tx = pm.currentTransaction();
-		
 		List<User> Useres = new ArrayList<>();
 		
 		try {
-			tx.begin();
 			Extent<User> extent = pm.getExtent(User.class, true);
 			
 			for (User category : extent) {
 				Useres.add(category);
 			}
-			tx.commit();
+			
 			
 		}catch(Exception e) {
 			logger.error("Error retrieving all the Useres :" + e.getMessage());
 		}finally {
-			if(tx != null && tx.isActive()) {
-				tx.rollback();
-			}
 			pm.close();	
 		}
 		return Useres;
 	}
 
 	public User find(String login) {
-		PersistenceManager pm = pmf.getPersistenceManager();
-		Transaction tx = pm.currentTransaction();
-		
+		PersistenceManager pm = pmf.getPersistenceManager();		
 		User result = null;
-		try {
-			tx.begin();
-			
+		try {		
 			Query<?> query = pm.newQuery("SELECT FROM " + User.class.getName() + " WHERE login == '" + login + "'");
 			query.setUnique(true);
 			result = (User) query.execute();
-			logger.debug("1:Searched for  " + login + " and found " + result.toString() );
-			tx.commit();
-			logger.debug("2:Searched for " + login + " and found " + result.toString() );
+
 		}catch(Exception e) {
-			logger.error("Error querying an User : "+ e.getMessage());
 		}finally {
-			if(tx != null && tx.isActive()) {
-				tx.rollback();
-			}
 			pm.close();	
 		}
-		logger.debug("3: Searched for " + login + " and found " + result.toString() );
+		logger.debug("Searched for " + login + " and found " + result.toString() );
 		return result;
 	}
 

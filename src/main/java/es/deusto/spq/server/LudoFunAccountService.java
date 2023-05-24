@@ -53,7 +53,9 @@ public class LudoFunAccountService {
 		LibroDAO.getInstance().update(l);
 
 		a.setFecha_compra(alquiler.getFecha_compra());
-		a.setLibro(l.getNombre());
+		a.setLibronombre(l.getNombre());
+		a.setLibrodesc(l.getDescripccion());
+		a.setLibroprecio(l.getPrecio());
 		a.setUsuario(alquiler.getUsuario());
 
 		AlquilerDAO.getInstance().Save(a);
@@ -110,28 +112,15 @@ public class LudoFunAccountService {
 		return result;
 	}
  
-	public boolean registerCompra(CompraDTO c) {
-		/*
-		Libro l = new Libro(c.getLibronombre(), c.getli(), c.getLibro().getPrecio(),
-				c.getLibro().getTipo());
-		l.setId(c.getLibro().getId());
-		Compra compra = new Compra(l, c.getUsuario());
-		compra.setBookKey(l.getId());
-		try {
-			tx.begin();
-			// logger.info("AÑADIENDO LIBRO: ",compra.getLibro().getId(),
-			// compra.getLibro().getNombre(),compra.getUsuario());
-			pm.makePersistent(compra);
-			logger.info("Purchase added: {}", compra);
-			tx.commit();
-			return true;
-		} catch (Exception e) {
-			logger.error("Exception thrown while adding purchase: {}", e.getMessage());
-			if (tx.isActive()) {
-				tx.rollback();
-			}
-			return false;
-		}*/ return false; //TODO Quitar esto al hacer el DAO
+	public boolean registerCompra(CompraDTO compra) {
+		 //TODO Quitar esto al hacer el DAO
+		Compra c = new Compra();
+		c.setUsuario(compra.getUsuario());
+		c.setLibronombre(null);
+		c.setLibrodesc(null);
+		c.setLibroprecio(null);
+		
+		return false;
 	}
  
 	public boolean registerActualizarLibro(LibroDTO libro) {

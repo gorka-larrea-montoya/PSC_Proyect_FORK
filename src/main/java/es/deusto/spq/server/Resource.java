@@ -149,7 +149,6 @@ public class Resource {
 		
 	
 		List<Libro> books = new ArrayList();
-		List<Long> ids = new ArrayList();
 		
 		//TODO reescribir todo esto
 		// coger ids de los libros que hay en la tabla compra con ese usuario

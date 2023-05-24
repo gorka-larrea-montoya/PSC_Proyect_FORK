@@ -18,7 +18,9 @@ public class Alquiler {
 	@PrimaryKey
 	@Persistent(valueStrategy = IdGeneratorStrategy.NATIVE)
 	private Long id;
-	private String libro;
+	@Persistent
+	private Float libroprecio;
+	private String libronombre,librodesc;
 	private String usuario; 
 	@Persistent(defaultFetchGroup = "true")
 	private String fecha_compra;
@@ -29,19 +31,35 @@ public class Alquiler {
 		
 	}
 	
-	public Alquiler(String libro, String usuario, String fecha_compra) {
+	public Alquiler(String libronombre, String usuario, String fecha_compra) {
 		super();
-		this.libro = libro;
-//		this.usuario = usuario;
+		this.libronombre = libronombre;
+		this.usuario = usuario;
 		this.fecha_compra = fecha_compra;
 	}
 	
-	public String getLibro() {
-		return libro;
+	public String getLibronombre() {
+		return libronombre;
 	}
-	public void setLibro(String libro) {
-		this.libro = libro;
+	public void setLibronombre(String libronombre) {
+		this.libronombre = libronombre;
 	}
+	public Float getLibroprecio() {
+		return libroprecio;
+	}
+
+	public void setLibroprecio(Float libroprecio) {
+		this.libroprecio = libroprecio;
+	}
+
+	public String getLibrodesc() {
+		return librodesc;
+	}
+
+	public void setLibrodesc(String librodesc) {
+		this.librodesc = librodesc;
+	}
+
 	public String getUsuario() {
 		return usuario;
 	}
@@ -54,4 +72,5 @@ public class Alquiler {
 	public void setFecha_compra(String fecha_compra) {
 		this.fecha_compra = fecha_compra;
 	}
+	
 }
