@@ -39,8 +39,7 @@ public class ExampleClient {
 
 	private Client client;
 	WebTarget webTarget;
-	//TODO Implementar el patron singleton
-		public static ExampleClient instance;
+	public static ExampleClient instance;
 	
 	
 

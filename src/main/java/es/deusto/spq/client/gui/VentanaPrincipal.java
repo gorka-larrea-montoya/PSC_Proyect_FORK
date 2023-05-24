@@ -15,6 +15,9 @@ import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import es.deusto.spq.client.ClientController;
 import es.deusto.spq.client.ExampleClient;
 import es.deusto.spq.pojo.LibroDTO;
@@ -32,6 +35,8 @@ import java.awt.event.ActionEvent;
 @SuppressWarnings("serial")
 public class VentanaPrincipal extends JFrame {
 
+	protected static final Logger logger = LogManager.getLogger();
+	
 	String usuario, contraseña;
 	JPanel contentPane, panel, panel_1;
 	JLabel lblLogo;
@@ -204,13 +209,15 @@ public class VentanaPrincipal extends JFrame {
 	private void cargarDatosAlquiler() {
 		// Primero  descarga todas las lineas para que se pueda cargar 
 		for (int i = 0; i < modelo.getRowCount(); i++) {
-			modelo.removeRow(0);
+			modelo.removeRow(i);
 		}
+		
+		
 		books = ExampleClient.getInstance().getBooksAlquiler();
 		for (LibroDTO libro : books) {
 			String[] fila = { libro.getNombre(), libro.getDescripccion(), String.valueOf(libro.getPrecio())};
 			modelo.addRow(fila);
-			//System.out.println(libro.toString());
+			logger.debug("anadiendo fila : " + libro.toString());
 			
 		}
 		
@@ -219,14 +226,14 @@ public class VentanaPrincipal extends JFrame {
 	private void cargarDatosCompra() {
 		// Primero  descarga todas las lineas para que se pueda cargar 
 		for (int i = 0; i < modelo.getRowCount(); i++) {
-			modelo.removeRow(0);
+			modelo.removeRow(i);
 		}
 		
 		books = ExampleClient.getInstance().getBooksCompra();
 		for (LibroDTO libro : books) {
 			String[] fila = {libro.getNombre(), libro.getDescripccion(), String.valueOf(libro.getPrecio()) };
 			modelo.addRow(fila);
-			//System.out.println(libro.toString());
+			logger.debug("anadiendo fila : " + libro.toString());
 		}
 
 	}

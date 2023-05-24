@@ -58,8 +58,7 @@ public class BookSelectionDialog extends JDialog {
     }
     
     private void cargarDatos() {
-        ExampleClient eC = new ExampleClient("localhost", "8080");
-        books = eC.getAllBooks();
+        books = ExampleClient.getInstance().getAllBooks();
         if (books != null) {
             for (LibroDTO libro : books) {
                 String[] fila = { libro.getNombre(), libro.getDescripccion(), String.valueOf(libro.getPrecio()) };
