@@ -86,9 +86,9 @@ protected static final Logger logger = LogManager.getLogger();
 	   l.setPrecio(Float.parseFloat(precioField.getText()));
 	   l.setDescripccion(descField.getText());
 	   if (rbAlquiler.isSelected()) {
-		l.setTipo("Alquiler");
+		l.setTipo("alquiler");
 	   }else if (rbCompra.isSelected()) {
-		l.setTipo("Compra");   
+		l.setTipo("compra");   
 	   }
 	   return l;
    }
