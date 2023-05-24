@@ -23,20 +23,20 @@ public class AlquilerTest {
     	mockLibro = new Libro();
     	mockLibro.setNombre("lib");
     	mockLibro = new Libro("Libro de Prueba", "Libro Mock 01",(float) 5.1, "Alquiler");
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         alquiler = new Alquiler(mockLibro.getNombre(), "usuarioPrueba", new Date().toString());
     }
 
     @Test
     public void testGetLibro() {
-        assertEquals(mockLibro.getNombre(), alquiler.getLibro());
+        assertEquals(mockLibro.getNombre(), alquiler.getLibronombre());
     }
 
     @Test
     public void testSetLibro() {
         String newMockLibro = "MockLibro 02";
-        alquiler.setLibro(newMockLibro);
-        assertEquals(newMockLibro, alquiler.getLibro());
+        alquiler.setLibronombre(newMockLibro);
+        assertEquals(newMockLibro, alquiler.getLibronombre());
     }
 
     @Test

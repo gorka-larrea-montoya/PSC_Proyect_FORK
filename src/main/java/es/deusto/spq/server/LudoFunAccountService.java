@@ -16,6 +16,7 @@ import es.deusto.spq.server.jdo.Compra;
 import es.deusto.spq.pojo.AlquilerDTO;
 import es.deusto.spq.pojo.UserData;
 import es.deusto.spq.server.dao.AlquilerDAO;
+import es.deusto.spq.server.dao.CompraDAO;
 import es.deusto.spq.server.dao.LibroDAO;
 import es.deusto.spq.server.dao.UserDAO;
 import es.deusto.spq.server.jdo.Alquiler;
@@ -24,7 +25,7 @@ import es.deusto.spq.server.jdo.User;
 import es.deusto.spq.pojo.UserData;
 
 public class LudoFunAccountService {
-
+ 
 	private PersistenceManager pm = null;
 	private Transaction tx = null;
 	protected static final Logger logger = LogManager.getLogger();
@@ -113,14 +114,20 @@ public class LudoFunAccountService {
 	}
  
 	public boolean registerCompra(CompraDTO compra) {
-		 //TODO Quitar esto al hacer el DAO
 		Compra c = new Compra();
+		boolean result = false;
 		c.setUsuario(compra.getUsuario());
-		c.setLibronombre(null);
-		c.setLibrodesc(null);
-		c.setLibroprecio(null);
+		c.setLibronombre(compra.getLibronombre());
+		c.setLibrodesc(compra.getLibrodesc());
+		c.setLibroprecio(compra.getLibroprecio());
 		
-		return false;
+		// Si va bien debería pasarse a true
+		if(CompraDAO.getInstance().saveObject(c)) {
+			LibroDAO.getInstance().deleteByName(compra.getLibronombre());
+			result = true;
+		}
+				
+		return result;
 	}
  
 	public boolean registerActualizarLibro(LibroDTO libro) {

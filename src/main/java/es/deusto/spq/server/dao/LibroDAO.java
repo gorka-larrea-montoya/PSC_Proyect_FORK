@@ -160,5 +160,16 @@ public class LibroDAO extends DataAccessObjectBase implements IDataAccessObject<
 		}
 		pm.close();
 	}
+	public void deleteByName(String nombre) {
+		logger.debug("Called deleteByName: " + nombre);
+		Libro l = find(nombre);
+		
+		PersistenceManager pm = pmf.getPersistenceManager();
+		Transaction tx = pm.currentTransaction();
+		
+		delete(l);
+	
+		
+	}
 
 }

@@ -24,6 +24,7 @@ public class DataAccessObjectBase  {
 			logger.error("$Error deleting an object: " + e.getMessage());
 		} finally {
 			if (tx != null && tx.isActive()) {
+				logger.debug("Rolling Back DB");
 				tx.rollback();
 			}
 			pm.close();

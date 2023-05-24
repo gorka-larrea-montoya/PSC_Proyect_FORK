@@ -20,7 +20,7 @@ public class VentanaLoginNTest {
 	
 	@Before
 	public void setUp() {
-		MockitoAnnotations.initMocks(this);
+		MockitoAnnotations.openMocks(this);
 		ventanaLogin = new VentanaLoginN();
 	}
 	
