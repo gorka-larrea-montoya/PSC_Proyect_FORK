@@ -1,6 +1,7 @@
 package es.deusto.spq.server.dao;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.jdo.Extent;
@@ -37,53 +38,77 @@ public class LibroDAO extends DataAccessObjectBase implements IDataAccessObject<
 	@Override
 	public List<Libro> getAll() {
 		PersistenceManager pm = pmf.getPersistenceManager();
-		Transaction tx = pm.currentTransaction();
 		
 		List<Libro> Libroes = new ArrayList<>();
 		
 		try {
-			tx.begin();
+			
 			Extent<Libro> extent = pm.getExtent(Libro.class, true);
 			
 			for (Libro category : extent) {
 				Libroes.add(category);
 			}
-			tx.commit();
+		
 			
 		}catch(Exception e) {
 			logger.error("Error retrieving all the Libroes :" + e.getMessage());
 		}finally {
-			if(tx != null && tx.isActive()) {
-				tx.rollback();
-			}
 			pm.close();	
 		}
+		logger.debug("Sending List of books with size" + Libroes.size());
+		logger.debug("Sending books test: " + Libroes.get(0).toString());
 		return Libroes;
+	}
+	public List<Libro> findTipo(String tipo){
+		logger.debug("called findTipo: " + tipo);
+		
+		PersistenceManager pm = pmf.getPersistenceManager();
+		
+		List<Libro> result = new ArrayList<>();
+		try {
+			
+			Query<Libro> query = pm.newQuery(Libro.class);
+			query.setFilter("tipo == '" + tipo + "'");
+			result = (List<Libro>) query.execute();
+
+			
+			logger.debug("Sending List of books with size " + result.size());
+			for (int i = 0; i < result.size(); i++) {
+				logger.debug("Sending Book: " + result.get(i).getNombre());;
+			}
+			
+			
+			logger.debug("Sending books test post commit: " + result.get(3).toString());
+		} catch(Exception e) {
+			logger.error("Error : " + e.getMessage());
+		} finally {
+			pm.close();
+		}
+		logger.debug("Sending List of books with size" + result.size());
+
+		for (int i = 0; i < result.size(); i++) {
+			logger.debug("Sending Book: " + result.get(i).getNombre());;
+		}
+		
+		return result;
 	}
 
 	public Libro find(String nombre) {
 		PersistenceManager pm = pmf.getPersistenceManager();
-		Transaction tx = pm.currentTransaction();
-		//ESTO NO FUNCIONABA ASI QUE PUSE LAS LLAMADAS DE DEBUG PARA VER DONDE DEJABA DE FUNCIONAR
-		// Y ENTONCES EMPIEZA A FUNCIONAR
-		// NO TOCAR SIN BUEN MOTIVO
 		Libro result = new Libro();
 		try {
-			tx.begin();
 			
 			//result = pm.getObjectById(Libro.class, nombre);
 			Query<?> query = pm.newQuery("SELECT FROM " + Libro.class.getName() + " WHERE nombre == '" + nombre + "'");
 			query.setUnique(true);
 			result = (Libro) query.execute();
 			logger.debug("LibroDAO : Searched for " + nombre + " and found " + result.toString() );
-			tx.commit();
+
 			logger.debug("LibroDAO : Right after commit:" + result.toString());
 		}catch(Exception e) {
 			logger.error("LibroDAO : Error querying an Libro : "+ e.getMessage());
 		}finally {
-			if(tx != null && tx.isActive()) {
-				tx.rollback();
-			}
+
 			logger.debug("Right before closing:" + result.toString());
 			pm.close();	
 		}

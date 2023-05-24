@@ -5,6 +5,7 @@ import javax.jdo.PersistenceManagerFactory;
 import javax.jdo.Query;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.jdo.JDOHelper;
@@ -25,6 +26,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.Response.Status;
 
 import org.apache.logging.log4j.Logger;
@@ -42,20 +44,24 @@ public class Resource {
 	protected static final Logger logger = LogManager.getLogger();
 
 	private int cont = 0;
-	private PersistenceManager pm = null;
-	private Transaction tx = null;
+
 
 	public Resource() {
 		PersistenceManagerFactory pmf = JDOHelper.getPersistenceManagerFactory("datanucleus.properties");
-		this.pm = pmf.getPersistenceManager();
-		this.tx = pm.currentTransaction();
-	}
+		}
 
 
 	@POST
+	@Path("/populateDB")
+	public Response populateDB() {
+		LudoFunBooksService.getInstance().populateDB();
+		return Response.ok().build();
+	}
+	
+	@POST
 	@Path("/anadirLibro")
 	public Response anadirLibro(Libro libro) {
-		if (LudoFunBooksService.getInstance().AddLibro(libro)) {
+		if (LudoFunBooksService.getInstance().addLibro(libro)) {
 			return Response.ok().build();
 		} else {
 			return Response.serverError().build();
@@ -82,52 +88,42 @@ public class Resource {
 			return Response.status(Response.Status.CONFLICT).build();
 		}
 	}
+	
 	@GET
 	@Path("/getBooks")
-	public List<Libro> getBooks() {
-		// obtener lista de los libros de la bbdd
-		List<Libro> books = null;
-		try {
-			Query query = pm.newQuery(Libro.class);
-			books = (List<Libro>) query.execute();
-		} finally {
-			pm.close();
-		}
-		return books;
+	@Produces(MediaType.APPLICATION_JSON)
+
+	public Response getBooks() {
+		logger.debug("Called getBooks");
+		List<Libro> result = LudoFunBooksService.getInstance().getLibros();
+		
+		return Response.ok(result).build();
 	}
 
 	@GET
 	@Path("/librosAlquiler")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Libro> getBooksAlquiler() {
-		// obtener lista de los libros de la bbdd
-		List<Libro> books = null;
-		try {
-			Query query = pm.newQuery(Libro.class);
-			query.setFilter("tipo == 'alquiler'");
-			books = (List<Libro>) query.execute();
-		} finally {
-			pm.close();
-		}
-		return books;
+	public Response getBooksAlquiler() {
+		logger.debug("Called getBooksAlquiler");
+		List<Libro> books = LudoFunBooksService.getInstance().getLibrosAlquiler();
+		logger.debug("Sending books test: " + books.get(0).toString());
+		logger.debug("Sending List of books with size" + books.size());
+		return Response.ok(books).build();
 	}
 
 	@GET
 	@Path("/librosCompra")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Libro> getBooksCompra() {
-		// obtener lista de los libros de la bbdd
-		List<Libro> books = null;
-		try {
-			Query query = pm.newQuery(Libro.class);
-			query.setFilter("tipo == 'compra'");
-			books = (List<Libro>) query.execute();
-		} finally {
-			pm.close();
-		}
-		return books;
+	public Response getBooksCompra() {
+		logger.debug("Called getBooksCompra");
+		
+		List<Libro> result = LudoFunBooksService.getInstance().getLibrosCompra();
+		logger.debug("Sending books test: " + result.get(0).toString());
+		logger.debug("Sending List of books with size " + result.size());
+		
+		return Response.ok(result).build();
 	}
-
+	
 	@POST
 	@Path("/ComprarLibro")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -149,7 +145,7 @@ public class Resource {
 	@POST
 	@Path("/librosCompraU")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Libro> getBooksCompraUsuario(String usuario) {
+	public Response getBooksCompraUsuario(String usuario) {
 		
 	
 		List<Libro> books = new ArrayList();
@@ -187,50 +183,17 @@ public class Resource {
 			pm.close();
 		}*/
 
-		return books;
+		return Response.ok(books).build();
 	}
 
 	
-	@POST
-	@Path("/librosAlquilarU")
+	@GET
+	@Path("/librosAlquiladosUsuario")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Libro> getBooksAlquilarUsuario(String usuario) {
-
-		List<Libro> books = new ArrayList();
-		List<String> titulos = new ArrayList();
-
-		// coger ids de los libros que hay en la tabla compra con ese usuario
-		try {
-			// System.out.println("ENTRA");
-			Query query = pm.newQuery(Alquiler.class);
-			query.setResult("libro");
-			query.setFilter("usuario == '" + usuario + "'");
-			System.out.println("QUERY2:" + query);
-			titulos = (List<String>) query.execute();
-			System.out.println("LONGITUD: "+ titulos.size());
-
-		} finally {
-
-		}
-
-		// buscar los libros que tiene esos ids
-		try {
-			List<Libro> libros = new ArrayList();
-			for (int i = 0; i < titulos.size(); i++) {
-				System.out.println("entra");
-				Query query = pm.newQuery(Libro.class);
-				System.out.println("QUERY3:" + query);
-				query.setFilter("nombre == '" + titulos.get(i)+"'");
-				System.out.println("QUERY4:" + query);
-				libros = (List<Libro>) query.execute();
-				books.addAll(libros);
-			}
-
-		} finally {
-			pm.close();
-		}
-
-		return books;
+	public Response getBooksAlquilarUsuario(String usuario) {
+		List<Alquiler> result = LudoFunBooksService.getInstance().getAlquileresUsuario(usuario);
+		
+		return Response.ok(result).build();
 	}
 
 	

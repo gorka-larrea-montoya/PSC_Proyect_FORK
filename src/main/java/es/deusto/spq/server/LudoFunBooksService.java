@@ -1,6 +1,8 @@
 package es.deusto.spq.server;
 
+import es.deusto.spq.server.dao.AlquilerDAO;
 import es.deusto.spq.server.dao.LibroDAO;
+import es.deusto.spq.server.jdo.Alquiler;
 import es.deusto.spq.server.jdo.Libro;
 
 import java.util.ArrayList;
@@ -30,21 +32,39 @@ public class LudoFunBooksService {
 
 	private LudoFunBooksService() {
 	}
-	public boolean AddLibro(Libro Lib) {
+	public boolean addLibro(Libro Lib) {
 		return LibroDAO.getInstance().Save(Lib);
 	}
+	public List<Libro> getLibros(){
+		logger.debug("Called getLibros");
+		return LibroDAO.getInstance().getAll();		
+	}
+	
+	public List<Libro> getLibrosCompra(){
+		logger.debug("Called getLibrosCompra");
+		
+		return LibroDAO.getInstance().findTipo("compra"); 		
+	}
+	public List<Libro> getLibrosAlquiler(){
+		logger.debug("Called getLibrosAlquiler");
+		
+		return LibroDAO.getInstance().findTipo("alquiler"); 		
+	}
+	public List<Alquiler> getAlquileresUsuario(String usuario) {
+		logger.debug("Called getAlquileresUsuario");
+		
+		return AlquilerDAO.getInstance().findByUser(usuario);
+	}
 
-	public void populateDB() {
+	
+
+ 	public void populateDB() {
 		ArrayList<Libro> bks = new ArrayList<Libro>();
 		
 		bks.add( new Libro("El capital","Obra de Karl Marx y Engels en la que bla bla bla",(float) 10.0,"alquiler"));
 		bks.add( new Libro("Teo va al parque", "En esta aventura para los mas jovenes bla bla",(float)5.95,"compra"));
 		bks.add( new Libro("Harry Potter y la piedra","Clasico de la JK en la que un chaval bla bla",(float)9.95,"compra"));
 		bks.add( new Libro("La biblia","El libro sagrado del cristianismo que bla bla bla",(float) 13.95,"alquiler"));
-//
-//		Book b1 = new Book("Cien años de soledad",
-//				"Obra de Gabriel García Márquez en la que narra la historia de la familia Buendía", (float) 9.5,
-//				"compra");
 		bks.add( new Libro("El Quijote",
 				"Obra de Miguel de Cervantes que cuenta las aventuras de un caballero y su escudero", (float) 8.2,"alquiler"));
 		bks.add( new Libro("La Odisea",
@@ -71,61 +91,55 @@ public class LudoFunBooksService {
 		bks.add( new Libro("El retrato de Dorian Gray",
 				"Obra de Oscar Wilde que cuenta la historia de un joven que desea la eterna juventud", (float) 9.1,
 				"alquiler"));
-		bks.add( new Libro("El código Da Vinci",
-				"Obra de Dan Brown que narra la búsqueda del Santo Grial por parte del profesor Robert Langdon",
-				(float) 6.8, "compra"));
-		bks.add( new Libro("La isla del tesoro",
-				"Obra de Robert Louis Stevenson que relata la búsqueda del tesoro del Capitán Flint", (float) 8.3,
-				"alquiler"));
-		bks.add( new Libro("El señor de las moscas",
-				"Obra de William Golding que describe la lucha por el poder entre un grupo de niños varados en una isla desierta",
-				(float) 7.9, "compra"));
-		bks.add( new Libro("El nombre de la rosa",
-				"Obra de Umberto Eco que cuenta la investigación de una serie de misteriosos asesinatos en una abadía medieval",
-				(float) 8.9, "compra"));
-		bks.add( new Libro("La conjura de los necios",
-				"Obra de John Kennedy Toole que narra las desventuras de Ignatius J. Reilly en Nueva Orleans",
-				(float) 7.6, "alquiler"));
-		bks.add( new Libro("El laberinto de la soledad",
-				"Obra de Octavio Paz que reflexiona sobre la identidad del mexicano", (float) 9.2, "compra"));
-		bks.add( new Libro("Moby Dick",
-				"Obra de Herman Melville que relata la obsesión del capitán Ahab por capturar a la ballena blanca",
-				(float) 8.4, "alquiler"));
-		bks.add( new Libro("Los Miserables",
-				"Obra de Victor Hugo que describe la vida de Jean Valjean y su lucha por la redención", (float) 9.5,
-				"compra"));
-		bks.add( new Libro("La casa de los espíritus",
-				"Obra de Isabel Allende que relata la historia de tres generaciones de la familia Trueba en Chile",
-				(float) 8.1, "alquiler"));
-		bks.add( new Libro("La historia interminable",
-				"Obra de Michael Ende que narra la aventura de Bastian Balthazar Bux en el mundo de Fantasía",
-				(float) 7.3, "compra"));
-		bks.add( new Libro("Crónicas marcianas",
-				"Obra de Ray Bradbury que describe la colonización de Marte por parte de los humanos", (float) 8.7,
-				"alquiler"));
-		bks.add( new Libro("El alquimista",
-				"Obra de Paulo Coelho que narra el viaje de Santiago en busca de su tesoro personal", (float) 6.9,
-				"compra"));
-		bks.add( new Libro("El club de la lucha",
-				"Obra de Chuck Palahniuk que describe la formación de un grupo de hombres que se reúnen para pelear a puñetazos",
-				(float) 8.6, "alquiler"));
-		bks.add( new Libro("Cien años de soledad",
-				"Obra de Gabriel García Márquez que narra la historia de la familia Buendía en Macondo", (float) 9.8,
-				"compra"));
-//		Book b27 = new Book("1984",
-//				"Obra de George Orwell que describe una sociedad totalitaria en la que se controla todo", (float) 9.3,
-//				"alquiler");
-//		Book b28 = new Book("La odisea",
-//				"Obra de Homero que relata el viaje de Ulises de vuelta a casa tras la Guerra de Troya", (float) 8.5,
-//				"compra");
-		bks.add( new Libro("El gran Gatsby",
-				"Obra de F. Scott Fitzgerald que describe la vida de los ricos en los años 20 en Nueva York",
-				(float) 7.9, "alquiler"));
-		bks.add( new Libro("El retrato de una dama",
-				"Obra de Henry James que cuenta la historia de Isabel Archer y su lucha por la independencia",
-				(float) 8.2, "compra"));
+//		bks.add( new Libro("El código Da Vinci",
+//				"Obra de Dan Brown que narra la búsqueda del Santo Grial por parte del profesor Robert Langdon",
+//				(float) 6.8, "compra"));
+//		bks.add( new Libro("La isla del tesoro",
+//				"Obra de Robert Louis Stevenson que relata la búsqueda del tesoro del Capitán Flint", (float) 8.3,
+//				"alquiler"));
+//		bks.add( new Libro("El señor de las moscas",
+//				"Obra de William Golding que describe la lucha por el poder entre un grupo de niños varados en una isla desierta",
+//				(float) 7.9, "compra"));
+//		bks.add( new Libro("El nombre de la rosa",
+//				"Obra de Umberto Eco que cuenta la investigación de una serie de misteriosos asesinatos en una abadía medieval",
+//				(float) 8.9, "compra"));
+//		bks.add( new Libro("La conjura de los necios",
+//				"Obra de John Kennedy Toole que narra las desventuras de Ignatius J. Reilly en Nueva Orleans",
+//				(float) 7.6, "alquiler"));
+//		bks.add( new Libro("El laberinto de la soledad",
+//				"Obra de Octavio Paz que reflexiona sobre la identidad del mexicano", (float) 9.2, "compra"));
+//		bks.add( new Libro("Moby Dick",
+//				"Obra de Herman Melville que relata la obsesión del capitán Ahab por capturar a la ballena blanca",
+//				(float) 8.4, "alquiler"));
+//		bks.add( new Libro("Los Miserables",
+//				"Obra de Victor Hugo que describe la vida de Jean Valjean y su lucha por la redención", (float) 9.5,
+//				"compra"));
+//		bks.add( new Libro("La casa de los espíritus",
+//				"Obra de Isabel Allende que relata la historia de tres generaciones de la familia Trueba en Chile",
+//				(float) 8.1, "alquiler"));
+//		bks.add( new Libro("La historia interminable",
+//				"Obra de Michael Ende que narra la aventura de Bastian Balthazar Bux en el mundo de Fantasía",
+//				(float) 7.3, "compra"));
+//		bks.add( new Libro("Crónicas marcianas",
+//				"Obra de Ray Bradbury que describe la colonización de Marte por parte de los humanos", (float) 8.7,
+//				"alquiler"));
+//		bks.add( new Libro("El alquimista",
+//				"Obra de Paulo Coelho que narra el viaje de Santiago en busca de su tesoro personal", (float) 6.9,
+//				"compra"));
+//		bks.add( new Libro("El club de la lucha",
+//				"Obra de Chuck Palahniuk que describe la formación de un grupo de hombres que se reúnen para pelear a puñetazos",
+//				(float) 8.6, "alquiler"));
+//		bks.add( new Libro("Cien años de soledad",
+//				"Obra de Gabriel García Márquez que narra la historia de la familia Buendía en Macondo", (float) 9.8,
+//				"compra"));
+//		bks.add( new Libro("El gran Gatsby",
+//				"Obra de F. Scott Fitzgerald que describe la vida de los ricos en los años 20 en Nueva York",
+//				(float) 7.9, "alquiler"));
+//		bks.add( new Libro("El retrato de una dama",
+//				"Obra de Henry James que cuenta la historia de Isabel Archer y su lucha por la independencia",
+//				(float) 8.2, "compra"));
 
-		logger.info("InitDB: Introduciendo libros");		
+		logger.info("PopulateDB: Introduciendo libros");		
 		for (Libro book : bks) {
 			LibroDAO.getInstance().Save(book);
 			

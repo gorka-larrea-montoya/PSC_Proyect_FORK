@@ -33,53 +33,66 @@ public class AlquilerDAO extends DataAccessObjectBase implements IDataAccessObje
 		super.deleteObject(object);
 		
 	}
-
+	public List<Alquiler> findByUser(String user){
+		logger.debug("called findByUser: "+user );
+		
+		PersistenceManager pm = pmf.getPersistenceManager();
+		
+		
+		List<Alquiler> result = new ArrayList<>();
+		try {
+			
+			Query<Alquiler> query = pm.newQuery(Alquiler.class);
+			query.setFilter("usuario == '" + user + "'");
+			List<Alquiler> execute = (List<Alquiler>) query.execute();
+			result = execute;
+			
+			logger.debug("Sending List of Alquilers with size " + result.size());
+			logger.debug("Sending Alquilers test: " + result.get(3).toString());
+			
+			
+		} catch (Exception e) {
+			logger.error("Error : " + e.getMessage());
+		}finally {
+			pm.close();
+		}
+		return result;
+	}
+	
+	
 	@Override
 	public List<Alquiler> getAll() {
 		PersistenceManager pm = pmf.getPersistenceManager();
-		Transaction tx = pm.currentTransaction();
 		
 		List<Alquiler> alquileres = new ArrayList<>();
 		
 		try {
-			tx.begin();
 			Extent<Alquiler> extent = pm.getExtent(Alquiler.class, true);
 			
 			for (Alquiler category : extent) {
 				alquileres.add(category);
 			}
-			tx.commit();
 			
 		}catch(Exception e) {
 			logger.error("Error retrieving all the Alquileres :" + e.getMessage());
 		}finally {
-			if(tx != null && tx.isActive()) {
-				tx.rollback();
-			}
 			pm.close();	
 		}
 		return alquileres;
 	}
 
 	public Alquiler find(String user, String libro) {
-		PersistenceManager pm = pmf.getPersistenceManager();
-		Transaction tx = pm.currentTransaction();
-		
+		PersistenceManager pm = pmf.getPersistenceManager();		
 		Alquiler result = null;
-		try {
-			tx.begin();
-			
+		try {			
 			Query<?> query = pm.newQuery("SELECT FROM " + Alquiler.class.getName() + " WHERE User == '" + user + " AND Libro == '" + libro + "'");
 			query.setUnique(true);
 			result = (Alquiler) query.execute();
 			
-			tx.commit();
+
 		}catch(Exception e) {
 			logger.error("Error querying an Alquiler : "+ e.getMessage());
 		}finally {
-			if(tx != null && tx.isActive()) {
-				tx.rollback();
-			}
 			pm.close();	
 		}
 		return result;

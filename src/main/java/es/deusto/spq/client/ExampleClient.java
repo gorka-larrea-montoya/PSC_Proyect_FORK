@@ -113,7 +113,8 @@ public class ExampleClient {
 	        return null;
 	    } else {
 	        List<LibroDTO> books = response.readEntity(new GenericType<List<LibroDTO>>() {});
-	        logger.info("Books correctly obtained");
+	        logger.debug("Received List of books with size: " + books.size());
+	        logger.debug("Received books test: " + books.get(0).toString());
 	        return books;
 	    }
 	}
@@ -127,7 +128,8 @@ public class ExampleClient {
 	        return null;
 	    } else {
 	        List<LibroDTO> books = response.readEntity(new GenericType<List<LibroDTO>>() {});
-	        logger.info("Books correctly obtained");
+	        logger.debug("Received List of books with size: " + books.size());
+	        logger.debug("Received books test: " + books.get(0).toString());
 	        return books;
 	    }
 	}
@@ -142,7 +144,15 @@ public class ExampleClient {
 	        return null;
 	    } else {
 	        List<LibroDTO> books = response.readEntity(new GenericType<List<LibroDTO>>() {});
-	        logger.info("Books correctly obtained");
+	        logger.debug("Received List of books with size: " + books.size());
+	        try {
+	        	for (int i = 0; i < books.size(); i++) {
+	        		logger.debug("Received books test: " + books.get(i).toString());
+				}
+			} catch (Exception e) {
+				logger.error(e.getMessage());
+			}
+	 
 	        return books;
 	    }
 	}
@@ -162,13 +172,13 @@ public class ExampleClient {
 		} else {
 			List<LibroDTO> books = response.readEntity(new GenericType<List<LibroDTO>>() {
 			});
-			logger.info("Books correctly obtained");
+			logger.debug("Received List of books with size: " + books.size());
 			return books;
 		}
 	}
 	
 	public List<LibroDTO> getBooksUsuarioUsuario(String usuario) {
-		WebTarget booksWebTarget = webTarget.path("librosAlquilarU");
+		WebTarget booksWebTarget = webTarget.path("librosAlquiladosUsuario");
 		Invocation.Builder invocationBuilder = booksWebTarget.request(MediaType.APPLICATION_JSON);
 
 		Response response = invocationBuilder.post(Entity.entity(usuario, MediaType.APPLICATION_JSON));
