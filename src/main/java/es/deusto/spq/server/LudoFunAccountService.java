@@ -50,7 +50,7 @@ public class LudoFunAccountService {
 //		User u = UserDAO.getInstance().find(alquiler.getUsuario());
 		Libro l = LibroDAO.getInstance().find(alquiler.getLibro());
 		l.setTipo("ALQUILADO");
-		logger.debug("AccountService: A punto de alquilar el siguiente libro: " + l.toString());
+		logger.debug("AccountService: A punto de alquilar el siguiente libro: " + l.toString() + " con el usuario: " + alquiler.getUsuario());
 		LibroDAO.getInstance().update(l);
 
 		a.setFecha_compra(alquiler.getFecha_compra());
@@ -107,7 +107,7 @@ public class LudoFunAccountService {
 				logger.debug("Login: Passwords match: " + userData.getPassword() + " - " + user.getPassword());
 				result = true;
 			} else {
-				logger.debug("Login: Passwords do not match: " + userData.getPassword() + " - " + user.getPassword());
+				logger.debug("Login: Passwords do not match: '" + userData.getPassword() + "' - '" + user.getPassword() + "'");
 			}
 		}
 		return result;

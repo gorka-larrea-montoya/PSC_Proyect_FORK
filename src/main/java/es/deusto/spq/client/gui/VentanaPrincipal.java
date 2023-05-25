@@ -41,6 +41,7 @@ public class VentanaPrincipal extends JFrame {
 	JPanel contentPane, panel, panel_1;
 	JLabel lblLogo;
 	JLabel lblTablaLibros = new JLabel("TABLA LIBROS");
+	//TODO rehacer toda esta tabla para que funcione
 	DefaultTableModel modelo = new DefaultTableModel(new Object[] {/*"Id",*/ "Nombre", "Descripcion", "Precio" }, 0);
 	JTable tabla = new JTable(modelo);
 	JButton btnNewButton;
@@ -208,7 +209,9 @@ public class VentanaPrincipal extends JFrame {
 
 	private void cargarDatosAlquiler() {
 		// Primero  descarga todas las lineas para que se pueda cargar 
-		for (int i = 0; i < modelo.getRowCount(); i++) {
+		logger.debug("getrowcount is: " + modelo.getRowCount());
+		for (int i = modelo.getRowCount()-1; i >= 0; i--) {
+			logger.debug("Removing row: " + i);
 			modelo.removeRow(i);
 		}
 		
@@ -225,7 +228,8 @@ public class VentanaPrincipal extends JFrame {
 
 	private void cargarDatosCompra() {
 		// Primero  descarga todas las lineas para que se pueda cargar 
-		for (int i = 0; i < modelo.getRowCount(); i++) {
+		for (int i = modelo.getRowCount()-1; i >= 0; i--) {
+			logger.debug("Removing row: " + i);
 			modelo.removeRow(i);
 		}
 		
