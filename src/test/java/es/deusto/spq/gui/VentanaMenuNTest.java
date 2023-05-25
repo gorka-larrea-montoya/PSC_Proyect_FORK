@@ -9,25 +9,25 @@ import org.mockito.MockitoAnnotations;
 
 import es.deusto.spq.client.gui.VentanaLoginN;
 import es.deusto.spq.client.gui.VentanaMenuN;
-import es.deusto.spq.pojo.Usuario;
+import es.deusto.spq.pojo.UserData;
 
 
 public class VentanaMenuNTest {
 	@Mock
-	Usuario u;
+	UserData u;
 	@Mock
 	VentanaMenuN vm;
 	
 	@Before
 	public void setUp() {
-		u = new Usuario();
-		u.setName("user");
+		u = new UserData();
+		u.setLogin("user");
 		u.setPassword("pass");
 		}
 	@Test
 	public void test() {
 		try {
-			VentanaMenuN vm = new VentanaMenuN(u.getName(),u.getPassword());
+			VentanaMenuN vm = new VentanaMenuN();
 		}catch(Exception e) {
 			assertTrue(false);
 		}

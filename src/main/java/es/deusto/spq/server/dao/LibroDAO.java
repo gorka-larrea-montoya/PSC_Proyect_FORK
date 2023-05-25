@@ -147,26 +147,33 @@ public class LibroDAO extends DataAccessObjectBase implements IDataAccessObject<
 		
 	}
 	public void alquilar(String nombre) {
+		logger.debug("Alquilar: " + nombre);
+		
 		PersistenceManager pm = pmf.getPersistenceManager();
 		Transaction tx = pm.currentTransaction();
-		
-		Libro l = find(nombre);
 		try {
-			//TODO hacer una función para facilitar el alquilar y desalquilar libros
-		} catch (Exception e) {
-			// TODO: handle exception
-		} finally {
+			tx.begin();
+			Query<?> query = pm.newQuery("SELECT FROM " + Libro.class.getName() + " WHERE nombre == '" + nombre + "'");
+			query.setUnique(true);
+			Libro l = (Libro) query.execute();
+			logger.debug("LibroDAO : Searched for " + nombre + " and found " + l.toString() );
 			
+			l.setTipo("alquilado");
+			pm.makePersistent(l);
+			tx.commit();
+		} catch (Exception e) {
+			logger.error("Error updating object: " + nombre + " : " + e.getMessage());
+			e.printStackTrace();
+		} finally {
+			if (tx != null && tx.isActive()) {
+				tx.rollback();
+			}
 		}
 		pm.close();
 	}
 	public void deleteByName(String nombre) {
 		logger.debug("Called deleteByName: " + nombre);
-		Libro l = find(nombre);
-		
-		PersistenceManager pm = pmf.getPersistenceManager();
-		Transaction tx = pm.currentTransaction();
-		
+		Libro l = find(nombre);	
 		delete(l);
 	
 		

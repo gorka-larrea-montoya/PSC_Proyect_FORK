@@ -24,44 +24,26 @@ import es.deusto.spq.server.jdo.Libro;
 import es.deusto.spq.server.jdo.User;
 import es.deusto.spq.pojo.UserData;
 
-public class LudoFunAccountService {
+public class AccountService {
  
 	private PersistenceManager pm = null;
 	private Transaction tx = null;
 	protected static final Logger logger = LogManager.getLogger();
-	private static LudoFunAccountService instance;
+	private static AccountService instance;
 
-	public static LudoFunAccountService getInstance() {
+	public static AccountService getInstance() {
 		if (instance == null) {
-			instance = new LudoFunAccountService();
+			instance = new AccountService();
 		}
 		return instance;
 	}
 
-	public LudoFunAccountService() {
+	public AccountService() {
 		PersistenceManagerFactory pmf = JDOHelper.getPersistenceManagerFactory("datanucleus.properties");
 		this.pm = pmf.getPersistenceManager();
 		this.tx = pm.currentTransaction();
 	}
 
-	public void alquilarLibro(AlquilerDTO alquiler) {
-
-		Alquiler a = new Alquiler();
-//		User u = UserDAO.getInstance().find(alquiler.getUsuario());
-		Libro l = LibroDAO.getInstance().find(alquiler.getLibroNombre());
-		l.setTipo("ALQUILADO");
-		logger.debug("AccountService: A punto de alquilar el siguiente libro: " + l.toString() + " con el usuario: " + alquiler.getUsuario());
-		LibroDAO.getInstance().update(l);
-
-		a.setFecha_compra(alquiler.getFecha_compra());
-		a.setLibronombre(l.getNombre());
-		a.setLibrodesc(l.getDescripccion());
-		a.setLibroprecio(l.getPrecio());
-		a.setUsuario(alquiler.getUsuario());
-
-		AlquilerDAO.getInstance().Save(a);
-
-	}
 
 	public boolean registerUser(UserData userData) {
 		try {

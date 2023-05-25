@@ -10,7 +10,6 @@ import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
 import es.deusto.spq.pojo.LibroDTO;
-import es.deusto.spq.pojo.Usuario;
 
 @PersistenceCapable(detachable="true")
 @Join

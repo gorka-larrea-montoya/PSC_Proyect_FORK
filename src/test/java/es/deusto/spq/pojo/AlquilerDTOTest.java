@@ -23,7 +23,8 @@ public class AlquilerDTOTest {
         when(libro.getNombre()).thenReturn("Libro 1");
         
         alquiler = new AlquilerDTO();
-        alquiler.setLibro("lib");
+        alquiler.setLibroNombre("lib");
+        alquiler.setLibrodesc("desc");
         alquiler.setUsuario("usu");
         alquiler.setFecha_compra("2023-04-30");
 
@@ -38,15 +39,15 @@ public class AlquilerDTOTest {
     }
     
     @Test
-    public void testGetLibro() {
-        assertEquals("lib", alquiler.getLibro());
+    public void testGetLibroNombre() {
+        assertEquals("lib", alquiler.getLibroNombre());
     }
     
     @Test
-    public void testSetLibro() {
+    public void testSetLibroNombre() {
     	alquiler = new AlquilerDTO();
-    	alquiler.setLibro("l2");
-        assertEquals("l2", alquiler.getLibro());
+    	alquiler.setLibroNombre("l2");
+        assertEquals("l2", alquiler.getLibrodesc());
     }
 
     @Test

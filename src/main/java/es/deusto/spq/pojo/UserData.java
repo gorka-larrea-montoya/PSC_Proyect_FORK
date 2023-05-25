@@ -9,7 +9,12 @@ public class UserData {
         // required by serialization
     }
 
-    public String getLogin() {
+    public UserData(String login, String pass) {
+		this.login = login;
+		this.password = pass;
+	}
+
+	public String getLogin() {
         return this.login;
     }
 

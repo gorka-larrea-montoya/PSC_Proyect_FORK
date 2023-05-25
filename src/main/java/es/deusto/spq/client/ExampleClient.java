@@ -71,14 +71,11 @@ public class ExampleClient {
 			return true;
 		}
 	}
-	public boolean loginUser(String name, String password) {
+	public boolean loginUser(UserData data) {
 		WebTarget loginUserWebTarget = webTarget.path("login");
 		Invocation.Builder invocationBuilder = loginUserWebTarget.request(MediaType.APPLICATION_JSON);
-		
-		UserData userData = new UserData();
-		userData.setLogin(name);
-		userData.setPassword(password);
-		Response response = invocationBuilder.post(Entity.entity(userData, MediaType.APPLICATION_JSON));
+		logger.debug("Logging in userdata: " + data.getLogin() + " - " + data.getPassword());
+		Response response = invocationBuilder.post(Entity.entity(data, MediaType.APPLICATION_JSON));
 		if (response.getStatus() != Status.OK.getStatusCode()) {
 			logger.error("Error connecting with the server. Code: {}", response.getStatus());
 			return false;
@@ -176,7 +173,7 @@ public class ExampleClient {
 		}
 	}
 	
-	public List<LibroDTO> getBooksUsuarioUsuario(String usuario) {
+	public List<LibroDTO> getBooksAlquilerUsuario(String usuario) {
 		WebTarget booksWebTarget = webTarget.path("librosAlquiladosUsuario");
 		Invocation.Builder invocationBuilder = booksWebTarget.request(MediaType.APPLICATION_JSON);
 
@@ -217,11 +214,12 @@ public class ExampleClient {
 		ArrayList<AlquilerDTO> alquileres = new ArrayList<AlquilerDTO>();
 		if(!libros.isEmpty()) {
 			for (LibroDTO libro : libros) {
-				alquileres.add(new AlquilerDTO(libro.getNombre(),usuario,new Date().toString()));
+				logger.debug("Mandando Alquiler: " + usuario + " : " + libro.getNombre());
+				alquileres.add(new AlquilerDTO(libro, usuario,new Date().toString()));
 			}
 			Response response = invocationBuilder.post(Entity.entity(alquileres, MediaType.APPLICATION_JSON));
 			if (response.getStatus() != Status.OK.getStatusCode()) {
-				logger.error("Error connecting with the server. Code: {}", response.getStatus());
+				logger.error("Error connecting with the server. Code: ", response.getStatus());
 				return false;
 			} else {
 				logger.info("Libros Alquilados Correctamente");
@@ -279,5 +277,9 @@ public class ExampleClient {
 		}
 		
 	}
-		
+	public boolean loginUser(String login, String pass) {
+		//Esta funcion es polimorfismo para hacer el código mas facil en general
+		return loginUser(new UserData(login, pass));
+	}
+
 }

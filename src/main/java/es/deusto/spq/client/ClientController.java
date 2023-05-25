@@ -1,18 +1,21 @@
 package es.deusto.spq.client;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import es.deusto.spq.client.gui.AnadirLibroOptionPane;
 import es.deusto.spq.pojo.LibroDTO;
-import es.deusto.spq.server.LudoFunAccountService;
+import es.deusto.spq.pojo.UserData;
+
+
 
 public class ClientController {
 	public static ClientController instance;
-	private static String user;
-	private static String pass;
+	private String user;
+	private String password;
 	protected static final Logger logger = LogManager.getLogger();
 	
 	
@@ -30,7 +33,16 @@ public class ClientController {
 	public boolean adminSaveBook(LibroDTO Lib) {
 		return ExampleClient.getInstance().anadirLibro(Lib);
 	}
+	public boolean loginUsuario(String nombre, String pass) {
+		UserData data = new UserData(nombre,pass);
+		boolean result = ExampleClient.getInstance().loginUser(data);
+		if (result) {
+			this.setUser(nombre);
+			this.setPass(pass);
+		}
+		return result;
 
+	}
 
 	public boolean validarLibro(String nombre,String desc, String precio, String tipo) {
 		boolean result = true;
@@ -62,20 +74,28 @@ public class ClientController {
 		return ExampleClient.getInstance().alquilarLibros(result, null);		
 	}
 
-	public static String getUser() {
+	public String getUser() {
 		return user;
 	}
 
-	public static void setUser(String user) {
-		ClientController.user = user;
+	public  void setUser(String user) {
+		this.user = user;
 	}
 
-	public static String getPass() {
-		return pass;
+	public  String getPass() {
+		return password;
 	}
 
-	public static void setPass(String pass) {
-		ClientController.pass = pass;
+	public void setPass(String pass) {
+		this.password = pass;
+	}
+
+	public List<LibroDTO> getBooksAlquilerUsuario() {
+		return ExampleClient.getInstance().getBooksAlquilerUsuario(user);
+	}
+
+	public List<LibroDTO> getBooksCompraUsuario() {
+		return ExampleClient.getInstance().getBooksCompraUsuario(user);
 	}
 	
 }

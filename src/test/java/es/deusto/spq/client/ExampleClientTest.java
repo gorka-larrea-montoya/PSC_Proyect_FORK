@@ -31,7 +31,6 @@ import org.mockito.MockitoAnnotations;
 import es.deusto.spq.pojo.AlquilerDTO;
 import es.deusto.spq.pojo.LibroDTO;
 import es.deusto.spq.pojo.UserData;
-import es.deusto.spq.pojo.Usuario;
 
 
 public class ExampleClientTest {

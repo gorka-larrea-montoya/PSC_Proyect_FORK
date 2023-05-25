@@ -9,14 +9,14 @@ import es.deusto.spq.client.gui.VentanaPrincipal;
 import es.deusto.spq.client.gui.VentanaRegistro;
 
 
-public class VentanPrincipalTest {
+public class VentanaPrincipalTest {
 	@Mock
 	VentanaRegistro vr;
 	
 	@Test
 	public void test() {
 		try {
-			VentanaPrincipal vr = new VentanaPrincipal("usu","cont","tipo");
+			VentanaPrincipal vr = new VentanaPrincipal("tipo");
 		}catch(Exception e) {
 			assertTrue(false);
 		}

@@ -17,6 +17,7 @@ import javax.swing.border.MatteBorder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import es.deusto.spq.client.ClientController;
 import es.deusto.spq.client.ExampleClient;
 import net.miginfocom.swing.MigLayout;
 import java.awt.Color;
@@ -151,18 +152,7 @@ public class VentanaLoginN extends JFrame {
 			@SuppressWarnings("deprecation")
 			@Override
 			public void actionPerformed(ActionEvent e) {
-
-				boolean bool = ExampleClient.getInstance().loginUser(txtUsuario.getText(), passContraseya.getText());
-				logger.info("Usuario:" + txtUsuario.getText() + " " + passContraseya.getText());
-
-				if (bool) {
-					//new VentanaPrincipal(txtUsuario.getText(), passContraseya.getText());
-					new VentanaMenuN(txtUsuario.getText(), passContraseya.getText());
-					dispose();
-				} else {
-					lblErrorContrasenya.setVisible(true);
-				}
-
+				loginUser();
 			}
 		});
 
@@ -246,5 +236,17 @@ public class VentanaLoginN extends JFrame {
 		});
 		
 
+	}
+	private void loginUser() {
+		boolean bool = ClientController.getInstance().loginUsuario(txtUsuario.getText(), passContraseya.getText());
+		logger.info("Usuario:" + txtUsuario.getText() + " " + passContraseya.getText());
+
+		if (bool) {
+			//new VentanaPrincipal(txtUsuario.getText(), passContraseya.getText());
+			new VentanaMenuN();
+			dispose();
+		} else {
+			lblErrorContrasenya.setVisible(true);
+		}
 	}
 }

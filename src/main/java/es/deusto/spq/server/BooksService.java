@@ -1,5 +1,6 @@
 package es.deusto.spq.server;
 
+import es.deusto.spq.pojo.AlquilerDTO;
 import es.deusto.spq.server.dao.AlquilerDAO;
 import es.deusto.spq.server.dao.LibroDAO;
 import es.deusto.spq.server.jdo.Alquiler;
@@ -17,20 +18,20 @@ import javax.jdo.Transaction;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class LudoFunBooksService {
+public class BooksService {
 
 	
 	protected static final Logger logger = LogManager.getLogger();
-	private static LudoFunBooksService instance;
+	private static BooksService instance;
 
-	public static LudoFunBooksService getInstance() {
+	public static BooksService getInstance() {
 		if (instance == null) {
-			instance = new LudoFunBooksService();
+			instance = new BooksService();
 		}
 		return instance;
 	}
 
-	private LudoFunBooksService() {
+	private BooksService() {
 	}
 	public boolean addLibro(Libro Lib) {
 		return LibroDAO.getInstance().Save(Lib);
@@ -55,7 +56,21 @@ public class LudoFunBooksService {
 		
 		return AlquilerDAO.getInstance().findByUser(usuario);
 	}
+	public void alquilarLibro(AlquilerDTO alquiler) {
 
+		Alquiler a = new Alquiler();
+		
+		logger.debug("A punto de alquilar el siguiente libro: " + alquiler.getLibroNombre() + " con el usuario: " + alquiler.getUsuario());
+
+		a.setFecha_compra(alquiler.getFecha_compra());
+		a.setLibronombre(alquiler.getLibroNombre());
+		a.setLibrodesc(alquiler.getLibrodesc());
+		a.setLibroprecio(alquiler.getLibroprecio());
+		a.setUsuario(alquiler.getUsuario());
+
+		AlquilerDAO.getInstance().Save(a);
+		LibroDAO.getInstance().alquilar(alquiler.getLibroNombre());
+	}
 	
 
  	public void populateDB() {

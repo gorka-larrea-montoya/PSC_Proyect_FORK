@@ -68,7 +68,7 @@ public class VentanaMenuN extends JFrame {
 	};
 	JTable tabla_2 = new JTable(modelComprar);
 
-	public VentanaMenuN(String usuario, String contraseña) {
+	public VentanaMenuN() {
 
 		setBounds(100, 100, 969, 416);
 		setLocationRelativeTo(null);
@@ -165,7 +165,7 @@ public class VentanaMenuN extends JFrame {
 		txInfo.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 		txInfo.setEditable(false);
 		txInfo.setFont(new Font("Montserrat", Font.PLAIN, 14));
-		txInfo.setText("Bienvenid@ de nuevo, " + usuario);
+		txInfo.setText("Bienvenid@ de nuevo, " + ClientController.getInstance().getUser());
 		panel.add(txInfo, BorderLayout.NORTH);
 		txInfo.setColumns(10);
 
@@ -196,7 +196,7 @@ public class VentanaMenuN extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 
-				VentanaPrincipal ventanaPrincipal = new VentanaPrincipal(usuario, contraseña, "alquiler");
+				VentanaPrincipal ventanaPrincipal = new VentanaPrincipal("alquiler");
 				dispose();
 			}
 		});
@@ -205,7 +205,7 @@ public class VentanaMenuN extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 
-				VentanaPrincipal ventanaPrincipal = new VentanaPrincipal(usuario, contraseña, "compra");
+				VentanaPrincipal ventanaPrincipal = new VentanaPrincipal("compra");
 				dispose();
 
 			}
@@ -238,12 +238,12 @@ public class VentanaMenuN extends JFrame {
 			        });
 			    }
 		});
-		cargarDatosCompra(usuario);
-		cargarDatosAlquilar(usuario);
+		cargarDatosCompra();
+		cargarDatosAlquilar();
 	}
 
-	private void cargarDatosAlquilar(String usuario) {
-		books = ExampleClient.getInstance().getBooksUsuarioUsuario(usuario);
+	private void cargarDatosAlquilar() {
+		books = ClientController.getInstance().getBooksAlquilerUsuario();
 		if (books != null) {
 			for (LibroDTO libro : books) {
 				String[] fila = { /* String.valueOf(libro.getId()), */ libro.getNombre(), libro.getDescripccion(),
@@ -257,8 +257,8 @@ public class VentanaMenuN extends JFrame {
 	}
 
 
-	private void cargarDatosCompra(String usuario) {
-		books = ExampleClient.getInstance().getBooksCompraUsuario(usuario);
+	private void cargarDatosCompra() {
+		books = ClientController.getInstance().getBooksCompraUsuario();
 		if (books != null) {
 			for (LibroDTO libro : books) {
 				String[] fila = { /* String.valueOf(libro.getId()), */ libro.getNombre(), libro.getDescripccion(),

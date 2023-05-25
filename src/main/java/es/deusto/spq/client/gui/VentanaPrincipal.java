@@ -53,7 +53,7 @@ public class VentanaPrincipal extends JFrame {
 	List<LibroDTO> books;
 
 
-	public VentanaPrincipal(String usuario, String contraseña, String tipo) {
+	public VentanaPrincipal(String tipo) {
 
 		setLocationRelativeTo(null);
 		setResizable(true);
@@ -192,7 +192,7 @@ public class VentanaPrincipal extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new VentanaMenuN(usuario, contraseña);
+				new VentanaMenuN();
 				dispose();
 			}
 		});

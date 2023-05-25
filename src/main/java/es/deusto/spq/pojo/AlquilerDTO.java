@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 
 public class AlquilerDTO {
 	
+	private Float libroprecio;
 	private String libronombre,librodesc;
 	private String usuario;
 	private String fecha_compra;
@@ -21,14 +22,26 @@ public class AlquilerDTO {
 	
 	/**
 	 * constructor con parametros
-	 * @param libro
+	 * @param libronombre
+	 * @param librodesc
+	 * @param libroprecio
 	 * @param usuario
 	 * @param fecha
 	 */
-	public AlquilerDTO(String libronombre,String librodesc, String usuario, String fecha) {
+	public AlquilerDTO(String libronombre,String librodesc,Float libroprecio, String usuario, String fecha) {
 		super();
 		this.libronombre = libronombre;
 		this.librodesc = librodesc;
+		this.libroprecio = libroprecio;
+		this.usuario = usuario;
+		this.fecha_compra = fecha;
+	}
+	
+	public AlquilerDTO(LibroDTO libro, String usuario,String fecha) {
+		super();
+		this.libronombre = libro.getNombre();
+		this.librodesc = libro.getDescripccion();
+		this.libroprecio = libro.getPrecio();
 		this.usuario = usuario;
 		this.fecha_compra = fecha;
 	}
@@ -58,6 +71,14 @@ public class AlquilerDTO {
 
 	public void setLibrodesc(String librodesc) {
 		this.librodesc = librodesc;
+	}
+
+	public Float getLibroprecio() {
+		return libroprecio;
+	}
+
+	public void setLibroprecio(Float libroprecio) {
+		this.libroprecio = libroprecio;
 	}
 	
 }

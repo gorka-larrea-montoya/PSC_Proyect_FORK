@@ -16,7 +16,6 @@ import es.deusto.spq.server.jdo.User;
 import es.deusto.spq.pojo.AlquilerDTO;
 
 import es.deusto.spq.pojo.UserData;
-import es.deusto.spq.pojo.Usuario;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -46,22 +45,20 @@ public class Resource {
 	private int cont = 0;
 
 
-	public Resource() {
-		PersistenceManagerFactory pmf = JDOHelper.getPersistenceManagerFactory("datanucleus.properties");
-		}
+	public Resource(){}
 
 
 	@POST
 	@Path("/populateDB")
 	public Response populateDB() {
-		LudoFunBooksService.getInstance().populateDB();
+		BooksService.getInstance().populateDB();
 		return Response.ok().build();
 	}
 	
 	@POST
 	@Path("/anadirLibro")
 	public Response anadirLibro(Libro libro) {
-		if (LudoFunBooksService.getInstance().addLibro(libro)) {
+		if (BooksService.getInstance().addLibro(libro)) {
 			return Response.ok().build();
 		} else {
 			return Response.serverError().build();
@@ -71,7 +68,7 @@ public class Resource {
 	@POST
 	@Path("/login")
 	public Response loginUser(UserData userData) {
-		if (LudoFunAccountService.getInstance().loginUser(userData)) {
+		if (AccountService.getInstance().loginUser(userData)) {
 			return Response.ok().build();
 		}else {
 			return Response.serverError().build();
@@ -81,8 +78,8 @@ public class Resource {
 	@POST
 	@Path("/register")
 	public Response registerUser(UserData userData) {
-		if (LudoFunAccountService.getInstance().registerUser(userData)) {
-			LudoFunBooksService.getInstance().populateDB();
+		if (AccountService.getInstance().registerUser(userData)) {
+			BooksService.getInstance().populateDB();
 			return Response.ok().build();
 		} else {
 			return Response.status(Response.Status.CONFLICT).build();
@@ -95,7 +92,7 @@ public class Resource {
 
 	public Response getBooks() {
 		logger.debug("Called getBooks");
-		List<Libro> result = LudoFunBooksService.getInstance().getLibros();
+		List<Libro> result = BooksService.getInstance().getLibros();
 		
 		return Response.ok(result).build();
 	}
@@ -105,7 +102,7 @@ public class Resource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getBooksAlquiler() {
 		logger.debug("Called getBooksAlquiler");
-		List<Libro> books = LudoFunBooksService.getInstance().getLibrosAlquiler();
+		List<Libro> books = BooksService.getInstance().getLibrosAlquiler();
 		logger.debug("Sending books test: " + books.get(0).toString());
 		logger.debug("Sending List of books with size" + books.size());
 		return Response.ok(books).build();
@@ -117,7 +114,7 @@ public class Resource {
 	public Response getBooksCompra() {
 		logger.debug("Called getBooksCompra");
 		
-		List<Libro> result = LudoFunBooksService.getInstance().getLibrosCompra();
+		List<Libro> result = BooksService.getInstance().getLibrosCompra();
 		logger.debug("Sending books test: " + result.get(0).toString());
 		logger.debug("Sending List of books with size " + result.size());
 		
@@ -129,7 +126,7 @@ public class Resource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response compraLibros(CompraDTO c) {
 		
-		if (LudoFunAccountService.getInstance().registerCompra(c)) {
+		if (AccountService.getInstance().registerCompra(c)) {
 			return Response.ok().build();
 		} else {
 			return Response.status(Response.Status.CONFLICT).build();
@@ -190,7 +187,7 @@ public class Resource {
 	@Path("/librosAlquiladosUsuario")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getBooksAlquilarUsuario(String usuario) {
-		List<Alquiler> result = LudoFunBooksService.getInstance().getAlquileresUsuario(usuario);
+		List<Alquiler> result = BooksService.getInstance().getAlquileresUsuario(usuario);
 		
 		return Response.ok(result).build();
 	}
@@ -206,7 +203,7 @@ public class Resource {
 	public Response ActualizarLibrosComprado(LibroDTO libro) {
 
 
-		if (LudoFunAccountService.getInstance().registerActualizarLibro(libro)) {
+		if (AccountService.getInstance().registerActualizarLibro(libro)) {
 			return Response.ok().build();
 		} else {
 			return Response.status(Response.Status.CONFLICT).build();
@@ -221,7 +218,7 @@ public class Resource {
 		logger.info("Recibidos alquileres:");
 		for (AlquilerDTO alquiler : alquileres) {
 			logger.info("Recibidos Alquileres: " + alquiler.getUsuario() + ": " + alquiler.getLibroNombre() + " - " + alquiler.getFecha_compra());
-			LudoFunAccountService.getInstance().alquilarLibro(alquiler);
+			BooksService.getInstance().alquilarLibro(alquiler);
 		}
 
 		return Response.ok("//TODO ALQUILAR LIBROS").build();
