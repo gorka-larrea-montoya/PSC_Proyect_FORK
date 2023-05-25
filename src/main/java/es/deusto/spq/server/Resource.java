@@ -217,10 +217,10 @@ public class Resource {
 	@POST
 	@Path("alquilarLibros")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response getLibrosAlquiladosUsuario(ArrayList<AlquilerDTO> alquileres) {
+	public Response alquilarLibros(ArrayList<AlquilerDTO> alquileres) {
 		logger.info("Recibidos alquileres:");
 		for (AlquilerDTO alquiler : alquileres) {
-			logger.info(" " + alquiler.getUsuario() + ": " + alquiler.getLibro() + " - " + alquiler.getFecha_compra());
+			logger.info("Recibidos Alquileres: " + alquiler.getUsuario() + ": " + alquiler.getLibroNombre() + " - " + alquiler.getFecha_compra());
 			LudoFunAccountService.getInstance().alquilarLibro(alquiler);
 		}
 

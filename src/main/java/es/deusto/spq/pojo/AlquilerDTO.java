@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 
 public class AlquilerDTO {
 	
-	private String libro;
+	private String libronombre,librodesc;
 	private String usuario;
 	private String fecha_compra;
 	
@@ -25,18 +25,19 @@ public class AlquilerDTO {
 	 * @param usuario
 	 * @param fecha
 	 */
-	public AlquilerDTO(String libro, String usuario, String fecha) {
+	public AlquilerDTO(String libronombre,String librodesc, String usuario, String fecha) {
 		super();
-		this.libro = libro;
+		this.libronombre = libronombre;
+		this.librodesc = librodesc;
 		this.usuario = usuario;
 		this.fecha_compra = fecha;
 	}
 	
-	public String getLibro() {
-		return libro;
+	public String getLibroNombre() {
+		return libronombre;
 	}
-	public void setLibro(String libro) {
-		this.libro = libro;
+	public void setLibroNombre(String libro) {
+		this.libronombre = libro;
 	}
 	public String getUsuario() {
 		return usuario;
@@ -49,6 +50,14 @@ public class AlquilerDTO {
 	}
 	public void setFecha_compra(String fecha_compra) {
 		this.fecha_compra = fecha_compra;
+	}
+
+	public String getLibrodesc() {
+		return librodesc;
+	}
+
+	public void setLibrodesc(String librodesc) {
+		this.librodesc = librodesc;
 	}
 	
 }

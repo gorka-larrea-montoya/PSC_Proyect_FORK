@@ -48,7 +48,7 @@ public class LudoFunAccountService {
 
 		Alquiler a = new Alquiler();
 //		User u = UserDAO.getInstance().find(alquiler.getUsuario());
-		Libro l = LibroDAO.getInstance().find(alquiler.getLibro());
+		Libro l = LibroDAO.getInstance().find(alquiler.getLibroNombre());
 		l.setTipo("ALQUILADO");
 		logger.debug("AccountService: A punto de alquilar el siguiente libro: " + l.toString() + " con el usuario: " + alquiler.getUsuario());
 		LibroDAO.getInstance().update(l);
