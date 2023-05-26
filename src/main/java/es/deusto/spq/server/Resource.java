@@ -126,24 +126,7 @@ public class Resource {
 		return Response.ok(result).build();
 	}
 	 
-	@POST
-	@Path("/comprarLibros")
-	@Consumes(MediaType.APPLICATION_JSON)
-	public Response compraLibros(ArrayList<CompraDTO> cs) {
-		logger.info("Called comprarLibros: " + cs.size() );
-		Response r = Response.ok().build();
-		for (CompraDTO c : cs) {
-			logger.info("Called compraLibros: " + c.getLibronombre());
-			if (AccountService.getInstance().registerCompra(c)) {
-			} else {
-				logger.error("Error in compralibros: " + c.getLibronombre());
-				r = Response.status(Response.Status.CONFLICT).build();
-			}
-		}
-		return r;
-		
-		
-	}
+
 
 	/**
 	 * metodo coger libros que tiene un usuario especifico comprados
@@ -223,6 +206,27 @@ public class Resource {
 
 	}
 
+	@POST
+	@Path("/comprarLibros")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response compraLibros(ArrayList<CompraDTO> cs) {
+		logger.info("Called comprarLibros: " + cs.size() );
+		Boolean result = true;
+		for (CompraDTO c : cs) {
+			logger.info("Called compraLibros: " + c.getLibronombre());
+			if (AccountService.getInstance().registerCompra(c)) {
+			} else {
+				logger.error("Error in compralibros: " + c.getLibronombre());
+				result = false;
+			}
+		}
+		if (result) {
+			return Response.ok().build();
+		}else {
+			return Response.serverError().build();
+		}		
+	}
+	
 	@POST
 	@Path("alquilarLibros")
 	@Consumes(MediaType.APPLICATION_JSON)

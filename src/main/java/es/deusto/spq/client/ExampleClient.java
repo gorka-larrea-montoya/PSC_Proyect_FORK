@@ -244,7 +244,7 @@ public class ExampleClient {
 				logger.error("Error connecting with the server. Code: ", response.getStatus());
 				return false;
 			} else {
-				logger.info("Libros Alquilados Correctamente");
+				logger.info("Libros Comprados Correctamente");
 				return true;
 			}
 		}else {
