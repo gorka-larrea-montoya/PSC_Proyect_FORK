@@ -10,6 +10,7 @@ import javax.swing.table.DefaultTableModel;
 import es.deusto.spq.client.ClientController;
 import es.deusto.spq.client.ExampleClient;
 import es.deusto.spq.pojo.LibroDTO;
+import es.deusto.spq.server.jdo.Libro;
 
 import java.awt.BorderLayout;
 import javax.swing.JLabel;
@@ -249,10 +250,10 @@ public class VentanaMenuN extends JFrame {
 				String[] fila = { /* String.valueOf(libro.getId()), */ libro.getNombre(), libro.getDescripccion(),
 						String.valueOf(libro.getPrecio()) };
 				modelAlquiler.addRow(fila);
-				System.out.println(libro.toString());
+				logger.debug("Cargando Alquiler:" + libro.toString());
 			}
 		} else {
-			System.out.println("VACIO");
+			logger.debug("CargarAlquiler: no hay datos que cargar");
 		}
 	}
 
@@ -264,10 +265,10 @@ public class VentanaMenuN extends JFrame {
 				String[] fila = { /* String.valueOf(libro.getId()), */ libro.getNombre(), libro.getDescripccion(),
 						String.valueOf(libro.getPrecio()) };
 				modelComprar.addRow(fila);
-				System.out.println(libro.toString());
+				logger.debug("Cargando Compra:" + libro.toString());
 			}
 		} else {
-			System.out.println("VACIO");
+			logger.debug("CargarCompra: no hay datos que cargar");
 		}
 
 	}

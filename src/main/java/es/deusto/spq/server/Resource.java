@@ -51,13 +51,16 @@ public class Resource {
 	@POST
 	@Path("/populateDB")
 	public Response populateDB() {
+		
+		logger.info("Called populateDB");
 		BooksService.getInstance().populateDB();
 		return Response.ok().build();
 	}
 	
 	@POST
 	@Path("/anadirLibro")
-	public Response anadirLibro(Libro libro) {
+	public Response anadirLibro(Libro libro) { 
+		logger.info("Called anadirLibro: " + libro.getNombre());
 		if (BooksService.getInstance().addLibro(libro)) {
 			return Response.ok().build();
 		} else {
@@ -68,6 +71,8 @@ public class Resource {
 	@POST
 	@Path("/login")
 	public Response loginUser(UserData userData) {
+		logger.info("Called anadirLibro: " + userData.getLogin());
+
 		if (AccountService.getInstance().loginUser(userData)) {
 			return Response.ok().build();
 		}else {
@@ -120,17 +125,24 @@ public class Resource {
 		
 		return Response.ok(result).build();
 	}
-	
+	 
 	@POST
-	@Path("/ComprarLibro")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response compraLibros(CompraDTO c) {
-		
-		if (AccountService.getInstance().registerCompra(c)) {
-			return Response.ok().build();
-		} else {
-			return Response.status(Response.Status.CONFLICT).build();
+	@Path("/comprarLibros")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response compraLibros(ArrayList<CompraDTO> cs) {
+		logger.info("Called comprarLibros: " + cs.size() );
+		Response r = Response.ok().build();
+		for (CompraDTO c : cs) {
+			logger.info("Called compraLibros: " + c.getLibronombre());
+			if (AccountService.getInstance().registerCompra(c)) {
+			} else {
+				logger.error("Error in compralibros: " + c.getLibronombre());
+				r = Response.status(Response.Status.CONFLICT).build();
+			}
 		}
+		return r;
+		
+		
 	}
 
 	/**
@@ -182,7 +194,7 @@ public class Resource {
 		return Response.ok(books).build();
 	}
 
-	
+	 
 	@GET
 	@Path("/librosAlquiladosUsuario")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -221,7 +233,7 @@ public class Resource {
 			BooksService.getInstance().alquilarLibro(alquiler);
 		}
 
-		return Response.ok("//TODO ALQUILAR LIBROS").build();
+		return Response.ok().build();
 
 	}
 

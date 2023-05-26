@@ -44,7 +44,7 @@ public class Compra {
 		this.libroprecio = libro.getPrecio();
 	}
 	public Libro getLibro() {
-		Libro libro = new Libro(libronombre,librodesc,libroprecio,"Compra");
+		Libro libro = new Libro(libronombre,librodesc,libroprecio,"compra");
 		
 		return libro;
 	}

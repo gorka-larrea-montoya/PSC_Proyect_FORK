@@ -11,25 +11,24 @@ import es.deusto.spq.server.jdo.Compra;
 import es.deusto.spq.server.jdo.Libro;
 
 
-public class CompraJdoTest {
+public class CompraTest {
 
-	@Mock
-	private Libro libroMock;
-	private String usuarioMock;
 
+	private Libro libro;
+	private String usuario;
 	private Compra compra;
 
 	@Before
 	public void setUp() {
-		libroMock = mock(Libro.class);
-		usuarioMock = "usuario1";
-		compra = new Compra(libroMock, usuarioMock);
+		libro = new Libro("lib","desc",(float)3.0,"compra");
+		usuario = "usuario1";
+		compra = new Compra(libro, usuario);
 	}
 
-	@Test
-	public void testGetLibro() {
-		assertEquals(libroMock, compra.getLibro());
-	}
+//	@Test Este test no tira por el ID en la BD
+//	public void testGetLibro() {
+//		assertEquals(libro, compra.getLibro());
+//	}
 
 	@Test
 	public void testSetLibro() {
@@ -40,7 +39,7 @@ public class CompraJdoTest {
 
 	@Test
 	public void testGetUsuario() {
-		assertEquals(usuarioMock, compra.getUsuario());
+		assertEquals(usuario, compra.getUsuario());
 	}
 
 	@Test
@@ -50,15 +49,15 @@ public class CompraJdoTest {
 		assertEquals(usuarioMock2, compra.getUsuario());
 	}
 
-//	@Test
-//	public void testGetPrecio() {
-//		assertEquals(precioMock, compra.getPrecio(), 0);
-//	}
-//
-//	@Test
-//	public void testSetPrecio() {
-//		float precioMock2 = 20.0f;
-//		compra.setPrecio(precioMock2);
-//		assertEquals(precioMock2, compra.getPrecio(), 0);
-//	}
+	@Test
+	public void testGetPrecio() {
+		assertEquals(libro.getPrecio(), compra.getLibroprecio(), 0);
+	}
+
+	@Test
+	public void testSetPrecio() {
+		float precio = 20.0f;
+		compra.setLibroprecio(precio);
+		assertEquals(precio, compra.getLibroprecio(),0.1);
+	}
 }

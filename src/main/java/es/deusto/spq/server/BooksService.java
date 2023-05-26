@@ -2,8 +2,10 @@ package es.deusto.spq.server;
 
 import es.deusto.spq.pojo.AlquilerDTO;
 import es.deusto.spq.server.dao.AlquilerDAO;
+import es.deusto.spq.server.dao.CompraDAO;
 import es.deusto.spq.server.dao.LibroDAO;
 import es.deusto.spq.server.jdo.Alquiler;
+import es.deusto.spq.server.jdo.Compra;
 import es.deusto.spq.server.jdo.Libro;
 
 import java.util.ArrayList;
@@ -36,6 +38,11 @@ public class BooksService {
 	public boolean addLibro(Libro Lib) {
 		return LibroDAO.getInstance().Save(Lib);
 	}
+	public boolean comprarLibro(Compra compra) {
+		logger.debug("Comprando:" + compra.getUsuario() + compra.getLibronombre());
+		LibroDAO.getInstance().deleteByName(compra.getLibronombre());
+		return CompraDAO.getInstance().saveObject(compra);
+		}
 	public List<Libro> getLibros(){
 		logger.debug("Called getLibros");
 		return LibroDAO.getInstance().getAll();		

@@ -43,7 +43,7 @@ public class ClientController {
 		return result;
 
 	}
-
+ 
 	public boolean validarLibro(String nombre,String desc, String precio, String tipo) {
 		boolean result = true;
 		if (nombre.trim() == "") {
@@ -71,7 +71,7 @@ public class ClientController {
 	}
 
 	public boolean alquilarLibros(ArrayList<LibroDTO> result) {
-		return ExampleClient.getInstance().alquilarLibros(result, null);		
+		return ExampleClient.getInstance().alquilarLibros(result, user);		
 	}
 
 	public String getUser() {
@@ -96,6 +96,11 @@ public class ClientController {
 
 	public List<LibroDTO> getBooksCompraUsuario() {
 		return ExampleClient.getInstance().getBooksCompraUsuario(user);
+	}
+
+	public boolean comprarLibros(ArrayList<LibroDTO> result) {
+		
+		return ExampleClient.getInstance().comprarLibros(result, user);
 	}
 	
 }

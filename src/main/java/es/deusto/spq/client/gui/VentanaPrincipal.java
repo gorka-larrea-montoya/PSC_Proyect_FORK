@@ -46,8 +46,7 @@ public class VentanaPrincipal extends JFrame {
 	JTable tabla = new JTable(modelo);
 	JButton btnNewButton;
 	private JPanel panel_2;
-	private JButton btnAlquilar;
-	private JButton btnCompra;
+	private JButton btnProcesar;
 	private JButton btnSalir;
 	private JButton btnReturn;
 	List<LibroDTO> books;
@@ -104,10 +103,9 @@ public class VentanaPrincipal extends JFrame {
 		panel_2.add(btnSalir);
 		panel_2.add(btnReturn);
 		
-		btnAlquilar = new JButton("Alquilar");
-		btnAlquilar.setEnabled(true);
-		btnCompra = new JButton("Compra");
-		btnCompra.setEnabled(true);
+		btnProcesar = new JButton();
+		btnProcesar.setEnabled(true);
+
 
 		
 		panel_1 = new JPanel();
@@ -119,72 +117,28 @@ public class VentanaPrincipal extends JFrame {
 		lblTablaLibros.setOpaque(true);
 		panel_1.add(lblTablaLibros, BorderLayout.NORTH);
 		panel_1.add(new JScrollPane(tabla), BorderLayout.CENTER);
-		
+	
 		//CONTROL DE LOS BOTONES
 		if(tipo=="alquiler") {
 			cargarDatosAlquiler();
-			panel_2.add(btnAlquilar);
+			btnProcesar.setText("Alquilar");
 		}else if(tipo=="compra"){
 			cargarDatosCompra();
-			panel_2.add(btnCompra);
+			btnProcesar.setText("Comprar");
 		}
-		
+		panel_2.add(btnProcesar);
 		tabla.addMouseListener(new MouseAdapter() {
 			@SuppressWarnings("unused")
 			public void MouseClicked(MouseEvent e) {
-				btnAlquilar.setEnabled(true);
+				btnProcesar.setEnabled(true);
 			}
 		});
+			
+		//FUNCIONALIDAD DE ALQUILER o Compra
 		
-		
-		/*--Comprar Libro--*/
-		btnCompra.addActionListener(new ActionListener() {
+		btnProcesar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
-				ExampleClient eC = new ExampleClient("localhost", "8080");
-				LibroDTO result = null;
-				
-				int[] libros = tabla.getSelectedRows();
-				
-				for (int i = 0; i < libros.length; i++) {
-					result = books.get(i);
-					System.out.println("Comprando Libro : " + books.get(libros[i]).getNombre());
-					eC.comprarLibro(books.get(libros[i]).getId(), books.get(libros[i]).getNombre(), books.get(libros[i]).getDescripccion(), result.getPrecio(),books.get(libros[i]).getTipo(), usuario);
-					eC.actualizarLibroComprado(books.get(libros[i]).getId(), books.get(libros[i]).getNombre(), books.get(libros[i]).getDescripccion(), result.getPrecio(),books.get(libros[i]).getTipo(), usuario);
-				}	
-				for (int i = libros.length-1; i>=0 ; i--) {
-					modelo.removeRow(libros[i]);
-				}
-							
-				JOptionPane.showMessageDialog(null, "Libro comprado exitosamente", "Compra realizada", JOptionPane.INFORMATION_MESSAGE);
-
-			}
-		});
-		
-		
-		//FUNCIONALIDAD DE ALQUILER
-		
-		btnAlquilar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				
-				//btnAlquilar.setEnabled(false);
-				int[] libros = tabla.getSelectedRows();
-				ArrayList<LibroDTO> result = new ArrayList<LibroDTO>();
-				for (int i = 0; i < libros.length; i++) {
-					result.add(books.get(libros[i]));
-					System.out.println(books.get(libros[i]).getNombre());
-				} 
-
-				//ventana emergente de "Se ha alquilado el libro". Así además se hace mas natural la actualización de la tabla.
-				if (ClientController.getInstance().alquilarLibros(result)) {
-					JOptionPane.showMessageDialog(null, "Libro alquilado correctamente", "Alquiler", JOptionPane.INFORMATION_MESSAGE);
-					//Borra los libros del panel solo si se han alquilado correctamente
-					cargarDatosAlquiler();
-					
-				}else {
-					JOptionPane.showMessageDialog(null,"Error al alquilar libro","Compra",JOptionPane.ERROR_MESSAGE);
-				}	
+				procesarLibros(tipo);
 			}
 		});
 		
@@ -203,8 +157,36 @@ public class VentanaPrincipal extends JFrame {
 				
 			}
 		});
-		
+		 
 
+	}
+	private void procesarLibros(String tipo) {
+		
+		int[] libros = tabla.getSelectedRows();
+		ArrayList<LibroDTO> result = new ArrayList<LibroDTO>();
+		for (int i = 0; i < libros.length; i++) {
+			result.add(books.get(libros[i]));
+			logger.debug(books.get(libros[i]).getNombre());
+		}		
+		if (tipo=="compra") {
+			if (ClientController.getInstance().comprarLibros(result)) {
+				JOptionPane.showMessageDialog(null, "Libro comprado correctamente", "Compra", JOptionPane.INFORMATION_MESSAGE);
+				//Borra los libros del panel solo si se han alquilado correctamente
+				cargarDatosCompra();
+			}else {
+				JOptionPane.showMessageDialog(null,"Error al comprar libro","Compra",JOptionPane.ERROR_MESSAGE);
+			}	
+		}else if (tipo=="alquiler") {
+			//ventana emergente de "Se ha alquilado el libro". Así además se hace mas natural la actualización de la tabla.
+			if (ClientController.getInstance().alquilarLibros(result)) {
+				JOptionPane.showMessageDialog(null, "Libro alquilado correctamente", "Alquiler", JOptionPane.INFORMATION_MESSAGE);
+				//Borra los libros del panel solo si se han alquilado correctamente
+				cargarDatosAlquiler();
+				
+			}else {
+				JOptionPane.showMessageDialog(null,"Error al alquilar libro","Alquiler",JOptionPane.ERROR_MESSAGE);
+			}	
+		}
 	}
 
 	private void cargarDatosAlquiler() {

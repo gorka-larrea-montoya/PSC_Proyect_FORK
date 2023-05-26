@@ -53,7 +53,7 @@ public class ExampleClient {
 			logger.error("Error: No hay Instance de ExampleClient");
 		}
 		return instance;
-	}
+	} 
 
 	public boolean registerUser(String login, String password) {
 		WebTarget registerUserWebTarget = webTarget.path("register");
@@ -228,38 +228,32 @@ public class ExampleClient {
 		}else {
 			return false;
 		}
-		
-		
-		
-//		for (int i = 0; i < libros.size(); i++) {
-//			logger.info("Intentando mandar: [" + libros.get(i)+"] "+ libros.get(i).getNombre());
-//		} 
-//		if (response.getStatus() != Status.OK.getStatusCode()) {
-//			logger.error("Error connecting with the server. Code: {}", response.getStatus());
-//		} else {
-//			logger.info("Libros Alquilados Correctamente");
-		}
-		
-
-	public boolean comprarLibro(long id, String titulo, String descrip, float precio, String tipo, String usuario) {
-	
-		WebTarget registerUserWebTarget = webTarget.path("ComprarLibro");
-		Invocation.Builder invocationBuilder = registerUserWebTarget.request(MediaType.APPLICATION_JSON);
-
-		LibroDTO l=new LibroDTO(titulo,descrip,precio,tipo);
-		l.setId(id);
-		CompraDTO compra=new CompraDTO(l,usuario);
-		Response response = invocationBuilder.post(Entity.entity(compra, MediaType.APPLICATION_JSON));
-		if (response.getStatus() != Status.OK.getStatusCode()) {
-			logger.error("Error connecting with the server. Code: {}", response.getStatus());
-			return false;
-		} else {
-			logger.info("User correctly logged");
-			return true;
-		}
 	}
-	
-	
+	public boolean comprarLibros(ArrayList<LibroDTO> libros, String usuario) {
+		WebTarget comprarlibros = webTarget.path("comprarLibros");
+		Invocation.Builder invocationBuilder = comprarlibros.request(MediaType.APPLICATION_JSON);
+		
+		ArrayList<CompraDTO> compras = new ArrayList<CompraDTO>();
+		if (!libros.isEmpty()) {
+			for(LibroDTO libro :libros) {
+				logger.debug("Mandando Compra: " + usuario + " : " + libro.getNombre());
+				compras.add(new CompraDTO(libro,usuario));
+			}
+			Response response = invocationBuilder.post(Entity.entity(compras, MediaType.APPLICATION_JSON));
+			if (response.getStatus() != Status.OK.getStatusCode()) {
+				logger.error("Error connecting with the server. Code: ", response.getStatus());
+				return false;
+			} else {
+				logger.info("Libros Alquilados Correctamente");
+				return true;
+			}
+		}else {
+			logger.error("Arraylist de libros vacio");
+			return false;
+		}
+			
+	}
+
 	
 	public boolean actualizarLibroComprado(long id, String titulo, String descrip, float precio, String tipo, String usuario) {
 		WebTarget registerUserWebTarget = webTarget.path("ActualizarLibroComprado");
